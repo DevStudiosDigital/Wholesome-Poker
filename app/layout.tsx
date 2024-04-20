@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/header";
+import SideBar from "@/components/layout/side-bar";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Bricolage_Grotesque({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${font.className} text-white bg-[#0F100F]`}>
+        <Header />
+        <div className="flex gap-10 px-4 lg:px-10 py-20 items-start">
+          <div className="hidden md:block">
+            <SideBar />
+          </div>
+          <main className="w-0 grow">{children}</main>
+        </div>
+      </body>
     </html>
   );
 }
