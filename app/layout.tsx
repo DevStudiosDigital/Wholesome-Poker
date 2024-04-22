@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={`${font.className} text-white bg-[#0F100F] relative overflow-auto`}
       >
-        <div className="h-full w-full absolute top-0 left-0 overflow-hidden">
+        <div className="h-full w-full absolute top-0 left-0 overflow-hidden -z-10">
           <div className="relative">
             <div className="w-[150vw] h-[150vw] rounded-full bg-primary opacity-40 blur-[120px] absolute top-[600px] -left-[100vw] -z-10"></div>
           </div>
