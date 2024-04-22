@@ -10,7 +10,7 @@ const LogoIcon = (props: SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_23_166)">
+      <g clipPath="url(#clip0_23_166)">
         <path
           d="M47.7361 50.7959H29.9946V54.2014H47.7361V50.7959Z"
           fill="white"

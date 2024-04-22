@@ -2,6 +2,8 @@ import Typography from "@/components/common/typography";
 import LogoIcon from "@/components/icons/logo-icon";
 import WalletBlackIcon from "@/components/icons/wallet-black-icon";
 import { GuideData } from "@/data/data";
+import KingImage from "@/assets/images/king.png";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -10,7 +12,7 @@ export default function Home() {
         <span className="text-primary">NFT</span> and{" "}
         <span className="text-secondary">Token</span> Staking
       </Typography>
-      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col lg:flex-row gap-4 justify-between bg-[#0f100f8f] rounded-[24px]">
+      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col lg:flex-row gap-4 justify-between bg-[#0f100f8f] rounded-[24px] md:mb-[120px]">
         <div className="bg-card flex flex-col md:flex-row px-6 md:px-10 xl:px-16 py-6 xl:py-8 gap-8 md:gap-12 lg:gap-20 xl:gap-[100px] rounded-[24px]">
           <div>
             <Typography size={60} className="font-bold">
@@ -31,6 +33,10 @@ export default function Home() {
             Connect Wallet
           </span>
         </button>
+      </div>
+
+      <div className="relative">
+        <Image src={KingImage} alt="king" className="md:absolute w-[200px] rotate-90 md:rotate-0 -translate-x-24 md:w-[250px] lg:w-[350px] md:right-0 xl:w-[450px] md:-top-20" />
       </div>
 
       <Typography size={120} className="font-bold">
