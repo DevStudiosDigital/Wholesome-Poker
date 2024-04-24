@@ -5,6 +5,8 @@ import Image from "next/image";
 import LogoIcon from "@/components/icons/logo-icon";
 import { GuideData } from "@/data/data";
 import KingImage from "@/assets/images/king.png";
+import { Lightbulb } from "lucide-react";
+import DiamondIcon from "@/components/icons/diamond-icon";
 
 type Props = {};
 
@@ -33,27 +35,40 @@ const NFTStaking = (props: Props) => {
             </button>
           </div>
         </div>
-        <button className="bg-primary rounded-[24px] text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
-          Stake
-        </button>
-        <button className="bg-white text-black rounded-[24px] text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
-          Stake all(0)
-        </button>
+        <div className="flex gap-5">
+          <button className="bg-primary rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
+            Stake
+          </button>
+          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
+            Stake all(0)
+          </button>
+        </div>
       </div>
 
       <div className="p-4 md:p-6 lg:p-8 xl:p-10 justify-between lg:items-center bg-[#0f100f8f] rounded-[24px] md:mb-[120px]">
-        <div className="flex gap-5 mb-16">
-          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-60 flex items-center justify-center">
-            In Wallet (15)
-          </button>
-          <button className="bg-transparent text-white border border-white rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-60 flex items-center justify-center">
-            Staked (0)
-          </button>
+        <div className="flex flex-wrap mb-10 lg:mb-16 w-full gap-5 justify-between items-center">
+          <div className="flex gap-5 order-2 lg:order-1 w-full lg:w-auto">
+            <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-0 grow lg:grow-0 lg:w-60 flex items-center justify-center">
+              In Wallet (15)
+            </button>
+            <button className="bg-transparent text-white border border-white rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-0 grow lg:grow-0 lg:w-60 flex items-center justify-center">
+              Staked (0)
+            </button>
+          </div>
+          <div className="flex gap-4 items-center py-3 px-6 rounded-[16px] bg-card w-full lg:w-auto order-1 lg:order-2">
+            <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center">
+              <Lightbulb />
+            </div>
+            <div className="w-0 grow lg:w-auto lg:grow-0 max-w-[420px]">
+              Scroll below to select which NFT {"you'd"} like to stake and earn
+              rewards with
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-center gap-5 mb-6">
-          <span className="font-bold text-[20px] lg:text-[28px]">
-            My NFTs (18)
+          <span className="font-bold text-[20px] lg:text-[28px] flex items-center gap-2">
+            My NFTs (18) <DiamondIcon />
           </span>
           <span>(Select which NFTs you’d like to stake/unstake)</span>
         </div>
