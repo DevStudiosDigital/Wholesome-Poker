@@ -17,7 +17,7 @@ const NFTStaking = (props: Props) => {
         <span className="text-primary">NFT</span> Staking
       </Typography>
 
-      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col lg:flex-row gap-4 justify-between lg:items-center bg-[#0f100f8f] rounded-[24px] mb-[120px]">
+      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col 2xl:flex-row gap-4 justify-between 2xl:items-center bg-[#0f100f8f] rounded-[24px] mb-[120px]">
         <div className="bg-card flex flex-col md:flex-row px-6 md:px-10 xl:px-16 py-6 xl:py-8 gap-8 md:gap-12 lg:gap-20 xl:gap-[100px] rounded-[24px]">
           <div>
             <Typography size={60} className="font-bold">
@@ -36,10 +36,10 @@ const NFTStaking = (props: Props) => {
           </div>
         </div>
         <div className="flex gap-5">
-          <button className="bg-primary rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
+          <button className="bg-primary rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full 2xl:w-60 flex items-center justify-center">
             Stake
           </button>
-          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full lg:w-60 flex items-center justify-center">
+          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full 2xl:w-60 flex items-center justify-center">
             Stake all(0)
           </button>
         </div>
