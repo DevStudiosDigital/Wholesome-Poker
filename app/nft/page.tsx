@@ -1,5 +1,7 @@
+"use client";
+
 import Typography from "@/components/common/typography";
-import React from "react";
+import React, { useState } from "react";
 import NFTImage from "@/assets/images/nft.png";
 import Image from "next/image";
 import LogoIcon from "@/components/icons/logo-icon";
@@ -11,6 +13,16 @@ import DiamondIcon from "@/components/icons/diamond-icon";
 type Props = {};
 
 const NFTStaking = (props: Props) => {
+  const [selectedNFTs, setSelectedNFTs] = useState<number[]>([]);
+
+  const handleToggleNFT = (id: number) => {
+    if (selectedNFTs.includes(id)) {
+      setSelectedNFTs((prev) => prev.filter((v) => v !== id));
+    } else {
+      setSelectedNFTs((prev) => [...prev, id]);
+    }
+  };
+
   return (
     <div>
       <Typography size={120} className="font-bold mb-10">
@@ -49,7 +61,7 @@ const NFTStaking = (props: Props) => {
         <div className="flex flex-wrap mb-10 lg:mb-16 w-full gap-5 justify-between items-center">
           <div className="flex gap-5 order-2 lg:order-1 w-full lg:w-auto">
             <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-0 grow lg:grow-0 lg:w-60 flex items-center justify-center">
-              In Wallet (15)
+              In Wallet (18)
             </button>
             <button className="bg-transparent text-white border border-white rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-4 w-0 grow lg:grow-0 lg:w-60 flex items-center justify-center">
               Staked (0)
@@ -73,13 +85,23 @@ const NFTStaking = (props: Props) => {
           <span>(Select which NFTs you’d like to stake/unstake)</span>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 ">
           {Array(18)
             .fill(0)
             .map((_, ind) => (
-              <div key={ind} className="rounded-[16px] bg-[#29292A]">
+              <div
+                key={ind}
+                className={`rounded-[16px] cursor-pointer ${
+                  selectedNFTs.includes(ind) ? "bg-white" : "bg-[#29292A]"
+                }`}
+                onClick={() => handleToggleNFT(ind)}
+              >
                 <Image src={NFTImage} alt="nft" className="w-full" />
-                <div className="text-center font-bold py-2">
+                <div
+                  className={`text-center font-bold py-2 ${
+                    selectedNFTs.includes(ind) ? "text-[#29292A]" : "text-white"
+                  }`}
+                >
                   BAYC #{ind + 1761}
                 </div>
               </div>
