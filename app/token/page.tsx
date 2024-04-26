@@ -71,14 +71,14 @@ const TokenStaking = () => {
             <input className="text-[36px] lg:text-[44px] 2xl:text-[48px] bg-card w-full px-4 py-2 rounded-[12px] md:rounded-[16px] outline-none mt-6 font-bold" />
           </div>
           <div className="flex flex-wrap justify-between w-full xl:max-w-[400px] 2xl:max-w-[500px] gap-5 mx-auto">
-            <StakeButton className="!bg-primary text-white w-1/3 grow">
+            <StakeButton className="!bg-primary text-white !w-1/3 grow">
               Stake USB
             </StakeButton>
-            <StakeButton className="w-1/3 grow">Unstake ETH</StakeButton>
-            <StakeButton className="!bg-primary text-white w-1/3 grow">
+            <StakeButton className="!w-1/3 grow">Unstake ETH</StakeButton>
+            <StakeButton className="!bg-primary text-white !w-1/3 grow">
               Stake ETH
             </StakeButton>
-            <StakeButton className="w-1/3 grow">Unstake USB</StakeButton>
+            <StakeButton className="!w-1/3 grow">Unstake USB</StakeButton>
           </div>
         </div>
         <div className="text-[20px] md:text-[24px] 2xl:text-[32px] hidden xl:flex flex-col justify-between">
