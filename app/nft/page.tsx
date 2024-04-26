@@ -29,8 +29,8 @@ const NFTStaking = (props: Props) => {
         <span className="text-primary">NFT</span> Staking
       </Typography>
 
-      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-col 2xl:flex-row gap-4 justify-between 2xl:items-center bg-[#0f100f8f] rounded-[24px] mb-[120px]">
-        <div className="bg-card flex flex-col md:flex-row px-6 md:px-10 xl:px-16 py-6 xl:py-8 gap-8 md:gap-12 lg:gap-20 xl:gap-[100px] rounded-[24px]">
+      <div className="p-4 md:p-6 lg:p-8 xl:p-10 flex flex-wrap gap-4 justify-between 2xl:items-center bg-[#0f100f8f] rounded-[16px] 2xl:rounded-[24px] mb-[120px]">
+        <div className="bg-card/60 flex flex-col md:flex-row px-6 md:px-12 2xl:px-16 py-6 2xl:py-8 gap-8 md:gap-12 lg:gap-20 xl:gap-[100px] rounded-[16px] 2xl:rounded-[24px] grow">
           <div>
             <Typography size={60} className="font-bold">
               <span className="text-secondary">0.3</span>$GAMBLE
@@ -42,16 +42,16 @@ const NFTStaking = (props: Props) => {
               <span className="text-secondary">1132</span>$GAMBLE
             </Typography>
             <Typography size={24}>Total Claimed</Typography>
-            <button className="bg-secondary text-[24px] rounded-[24px] w-full h-20 mt-5 text-black">
+            <button className="bg-secondary text-[20px] 2xl:text-[24px] rounded-[16px] 2xl:rounded-[24px] w-full h-16 2xl:h-20 mt-5 text-black">
               Claim
             </button>
           </div>
         </div>
-        <div className="flex gap-5">
-          <button className="bg-primary rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full 2xl:w-60 flex items-center justify-center">
+        <div className="flex gap-5 items-center justify-end grow w-full xl:w-auto">
+          <button className="bg-primary rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-0 grow xl:min-w-52 2xl:min-w-60 flex items-center justify-center">
             Stake
           </button>
-          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-full 2xl:w-60 flex items-center justify-center">
+          <button className="bg-white text-black rounded-[16px] lg:rounded-[24px] text-[16px] lg:text-[24px] py-5 w-0 grow xl:min-w-52 2xl:min-w-60 flex items-center justify-center">
             Stake all(0)
           </button>
         </div>
@@ -67,7 +67,7 @@ const NFTStaking = (props: Props) => {
               Staked (0)
             </button>
           </div>
-          <div className="flex gap-4 items-center py-3 px-6 rounded-[16px] bg-card w-full lg:w-auto order-1 lg:order-2">
+          <div className="flex gap-4 items-center py-3 px-6 rounded-[16px] bg-card/60 w-full lg:w-auto order-1 lg:order-2">
             <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center">
               <Lightbulb />
             </div>
@@ -123,7 +123,7 @@ const NFTStaking = (props: Props) => {
       <div className="mt-5 lg:mt-10 flex flex-col lg:flex-row gap-5">
         {GuideData.map((d, i) => (
           <div
-            className="w-full lg:w-0 grow py-16 px-6 bg-card backdrop-blur-md rounded-[16px] flex flex-col items-center"
+            className="w-full lg:w-0 grow py-16 px-6 bg-card/60 backdrop-blur-md rounded-[16px] flex flex-col items-center"
             key={i}
           >
             <LogoIcon className="w-10 lg:w-16 mb-8 lg:mb-20" />

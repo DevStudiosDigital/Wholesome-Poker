@@ -47,7 +47,7 @@ const Header = () => {
           <Image
             src={LogoImage}
             alt="logo"
-            className="block h-10 lg:h-[85px] w-auto lg:ml-12 xl:ml-32"
+            className="block h-10 lg:h-12 w-auto lg:ml-12 xl:ml-32"
           />
         </Link>
         <div className="hidden lg:block">

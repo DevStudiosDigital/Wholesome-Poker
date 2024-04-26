@@ -14,10 +14,13 @@ const config = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1600px",
       },
     },
     extend: {
+      screens: {
+        "2xl": "1600px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -25,7 +28,7 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         sky: "#66E3FF",
-        card: "#29292AA0",
+        card: "#29292A",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

@@ -9,17 +9,17 @@ const SocialButtons = () => {
     <div className="flex gap-8">
       <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
         <Button variant={"icon"} size={"icon"}>
-          <TelegramIcon />
+          <TelegramIcon className="w-6 h-6" />
         </Button>
       </a>
       <a href="https://discord.com" target="_blank" rel="noopener noreferrer">
         <Button variant={"icon"} size={"icon"}>
-          <DiscordIcon />
+          <DiscordIcon className="w-6 h-6" />
         </Button>
       </a>
       <a href="https://x.com" target="_blank" rel="noopener noreferrer">
         <Button variant={"icon"} size={"icon"}>
-          <TwitterIcon />
+          <TwitterIcon className="w-6 h-6" />
         </Button>
       </a>
     </div>
