@@ -24,7 +24,7 @@ const NFTStaking = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className=" custom-scrollbar">
       <Typography size={120} className="font-bold mb-10">
         <span className="text-primary">NFT</span> Staking
       </Typography>
@@ -85,27 +85,31 @@ const NFTStaking = (props: Props) => {
           <span>(Select which NFTs you’d like to stake/unstake)</span>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 ">
-          {Array(18)
-            .fill(0)
-            .map((_, ind) => (
-              <div
-                key={ind}
-                className={`rounded-[16px] cursor-pointer ${
-                  selectedNFTs.includes(ind) ? "bg-white" : "bg-[#29292A]"
-                }`}
-                onClick={() => handleToggleNFT(ind)}
-              >
-                <Image src={NFTImage} alt="nft" className="w-full" />
+        <div className="max-h-[700px] overflow-auto w-[calc(100%+10px)] pr-[10px] custom-scrollbar">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 ">
+            {Array(40)
+              .fill(0)
+              .map((_, ind) => (
                 <div
-                  className={`text-center font-bold py-2 ${
-                    selectedNFTs.includes(ind) ? "text-[#29292A]" : "text-white"
+                  key={ind}
+                  className={`rounded-[16px] cursor-pointer ${
+                    selectedNFTs.includes(ind) ? "bg-white" : "bg-[#29292A]"
                   }`}
+                  onClick={() => handleToggleNFT(ind)}
                 >
-                  BAYC #{ind + 1761}
+                  <Image src={NFTImage} alt="nft" className="w-full" />
+                  <div
+                    className={`text-center font-bold py-2 ${
+                      selectedNFTs.includes(ind)
+                        ? "text-[#29292A]"
+                        : "text-white"
+                    }`}
+                  >
+                    BAYC #{ind + 1761}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
 
