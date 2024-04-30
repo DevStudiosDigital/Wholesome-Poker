@@ -418,8 +418,11 @@ interface IBlast{
     function readGasParams(address contractAddress) external view returns (uint256 etherSeconds, uint256 etherBalance, uint256 lastUpdated, GasMode);
 }
 
+interface IWholesomePokerStaking {
+    function ownerOf(uint256 tokenId) external view returns (address);
+}
 
-contract WholeSomePokerStaking is Ownable {
+contract WholeSomePokerStaking is IWholesomePokerStaking, Ownable {
 
     // A struct to represent the stake details of each staked NFT token.
     struct Stake {
@@ -447,7 +450,7 @@ contract WholeSomePokerStaking is Ownable {
         // NFT = IERC721();
         // TOKEN = IERC20Metadata();
 
-        IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
+        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
     }
 
     ///
@@ -486,7 +489,7 @@ contract WholeSomePokerStaking is Ownable {
     function unstake(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) {
         uint256 totalRewards = 0;
         for (uint256 i = 0; i < tokenIds.length; i++) {
-            require(stakes[tokenIds[i]].staker == msg.sender, "Not The Owner");
+            require(stakes[tokenIds[i]].staker == msg.sender, "Not Staker");
             totalRewards += calculateReward(tokenIds[i]);
             delete stakes[tokenIds[i]];
             NFT.transferFrom(address(this), msg.sender, tokenIds[i]);
@@ -502,6 +505,7 @@ contract WholeSomePokerStaking is Ownable {
     function claim(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) {
         uint256 totalRewards = 0;
         for (uint i = 0; i < tokenIds.length; i++) {
+            require(stakes[tokenIds[i]].staker == msg.sender, "Not Staker!");
             uint256 reward = calculateReward(tokenIds[i]);
             totalRewards += reward;
             stakes[tokenIds[i]].lastClaimTimestamp = block.timestamp;
@@ -581,6 +585,14 @@ contract WholeSomePokerStaking is Ownable {
      */
     function calculateReward(uint256 tokenId) public view returns(uint256) { 
         return ((block.timestamp - stakes[tokenId].lastClaimTimestamp) / 1 days) * (rewardPerDay * 10 ** TOKEN.decimals());
+    }
+
+    /**
+     * List the original owner of the staked nft
+     * @param tokenId the token id to query
+     */
+    function ownerOf(uint256 tokenId) external view override returns(address) {
+        return stakes[tokenId].staker;
     }
 
 
