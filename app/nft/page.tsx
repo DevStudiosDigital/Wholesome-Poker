@@ -9,7 +9,11 @@ import { GuideData } from "@/data/data";
 import KingImage from "@/assets/images/king.png";
 import { Lightbulb } from "lucide-react";
 import DiamondIcon from "@/components/icons/diamond-icon";
-import { useAccount, useWriteContract } from "wagmi";
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 import {
   getIsApprovedForAllAPI,
   getOwnedNFTsAPI,
@@ -36,13 +40,13 @@ const NFTStaking = () => {
 
   const {
     data: contractHash,
-    writeContract,
+    writeContractAsync,
     isPending,
     isSuccess,
     error: contractError,
   } = useWriteContract();
 
-  const { writeContract: approve, isPending: isApproveLoading } =
+  const { writeContractAsync: approve, isPending: isApproveLoading } =
     useWriteContract();
 
   const [selectedNFTs, setSelectedNFTs] = useState<number[]>([]);
@@ -105,15 +109,16 @@ const NFTStaking = () => {
       );
       if (!approval) {
         setLoadingText("Approving...");
-        approve({
+        await approve({
           abi: MyNFTContractABI,
           address: MyNFTContractAddress as `0x${string}`,
           functionName: "setApprovalForAll",
           args: [WPStakingContractAddress, true],
         });
+        console.log("asdfasdfasdf");
       } else {
         setLoadingText("Staking...");
-        writeContract?.({
+        await writeContractAsync?.({
           abi: WPStakingContractABI,
           address: WPStakingContractAddress as `0x${string}`,
           functionName: "stake",
@@ -122,7 +127,7 @@ const NFTStaking = () => {
       }
     } else {
       setLoadingText("Unstaking...");
-      writeContract?.({
+      await writeContractAsync?.({
         abi: WPStakingContractABI,
         address: WPStakingContractAddress as `0x${string}`,
         functionName: "unstake",
@@ -133,7 +138,7 @@ const NFTStaking = () => {
 
   const handleClaim = () => {
     setLoadingText("Claiming...");
-    writeContract?.({
+    writeContractAsync?.({
       abi: WPStakingContractABI,
       address: WPStakingContractAddress as `0x${string}`,
       functionName: "claim",
