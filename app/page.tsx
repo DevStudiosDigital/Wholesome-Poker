@@ -1,11 +1,32 @@
+"use client";
+
 import Typography from "@/components/common/typography";
 import LogoIcon from "@/components/icons/logo-icon";
 import WalletBlackIcon from "@/components/icons/wallet-black-icon";
 import { GuideData } from "@/data/data";
 import KingImage from "@/assets/images/king.png";
 import Image from "next/image";
+import Web3 from "web3";
+import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
+import { UnderlyingToken } from "@/data/config";
+import { useAccount, useDisconnect } from "wagmi";
+import { shortenAddress } from "@/lib/utils";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function Home() {
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { openConnectModal } = useConnectModal();
+  const { totalClaimedReward } = useTotalClaimedReward();
+
+  const handleClickConnectButton = () => {
+    if (!address && openConnectModal) {
+      openConnectModal();
+    } else {
+      disconnect();
+    }
+  };
+
   return (
     <div>
       <Typography size={80} className="font-bold mb-10">
@@ -22,17 +43,28 @@ export default function Home() {
           </div>
           <div>
             <Typography size={48} className="font-bold">
-              <span className="text-secondary">0</span>$GAMBLE
+              <span className="text-secondary">
+                {Number(Web3.utils.fromWei(totalClaimedReward, "ether"))}
+              </span>
+              ${UnderlyingToken.symbol}
             </Typography>
 
             <Typography>Total Earned</Typography>
           </div>
         </div>
         <button className="bg-secondary flex items-center justify-center py-6 gap-2 text-black rounded-[16px] md:rounded-[20px] px-0 lg:px-16 xl:px-32 hover:opacity-90">
-          <WalletBlackIcon className="w-8 h-8 lg:w-10 lg:h-10" />
-          <span className="text-[24px] lg:text-[28px] font-bold">
-            Connect Wallet
-          </span>
+          {address ? (
+            <span className="text-[24px] lg:text-[28px] font-bold">
+              {shortenAddress(address)}
+            </span>
+          ) : (
+            <>
+              <WalletBlackIcon className="w-8 h-8 lg:w-10 lg:h-10" />
+              <span className="text-[24px] lg:text-[28px] font-bold">
+                Connect Wallet
+              </span>
+            </>
+          )}
         </button>
       </div>
 

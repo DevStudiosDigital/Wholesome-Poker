@@ -32,6 +32,8 @@ import {
   getTotalEarnedAPI,
 } from "@/services/wp.service";
 import Web3 from "web3";
+import TxSuccessDialog from "@/components/common/tx-success-dialog";
+import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
 
 enum TabLabels {
   Stacked = "Stacked",
@@ -40,6 +42,8 @@ enum TabLabels {
 
 const NFTStaking = () => {
   const { address } = useAccount();
+  const { totalClaimedReward, loadTotalClaimedReward } =
+    useTotalClaimedReward();
 
   const {
     data: contractHash,
@@ -60,8 +64,8 @@ const NFTStaking = () => {
   const [ownedTokenIds, setOwnedTokenIds] = useState<number[]>([]);
   const [stakedTokenIds, setStakedTokenIds] = useState<number[]>([]);
   const [loadingText, setLoadingText] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
 
-  const [totalReward, setTotalReward] = useState("0");
   const [reward, setReward] = useState("0");
 
   useEffect(() => {
@@ -72,15 +76,14 @@ const NFTStaking = () => {
     const timeoutId = setTimeout(() => {
       loadStakedNFTs();
       loadOwnedNFTs();
-      loadTotalEarnedRewards();
     }, DependencyDelayTime);
 
     return () => clearTimeout(timeoutId);
   }, [address]);
-  
 
   useEffect(() => {
     if (isConfirmed) {
+      setSuccessOpen(true);
       if (
         loadingText === NFTStakingLoadingMessages.Staking ||
         loadingText === NFTStakingLoadingMessages.Unstaking
@@ -89,7 +92,7 @@ const NFTStaking = () => {
         loadOwnedNFTs();
         loadStakedNFTs();
       } else if (loadingText === NFTStakingLoadingMessages.Claiming) {
-        loadTotalEarnedRewards();
+        loadTotalClaimedReward();
         loadClaimableReward();
       }
     }
@@ -116,14 +119,6 @@ const NFTStaking = () => {
       setStakedTokenIds(await getStakedNFTsAPI(address));
     } else {
       setStakedTokenIds([]);
-    }
-  };
-
-  const loadTotalEarnedRewards = async () => {
-    if (address) {
-      setTotalReward(await getTotalEarnedAPI(address));
-    } else {
-      setTotalReward("0");
     }
   };
 
@@ -195,7 +190,7 @@ const NFTStaking = () => {
   return (
     <>
       {(isPending || isConfirming) && (
-        <div className="w-screen h-screen fixed left-0 top-0 flex items-center justify-center bg-black/40 backdrop-blur-xl text-white font-bold text-[24px]">
+        <div className="w-screen h-screen fixed z-50 left-0 top-0 flex items-center justify-center bg-black/40 backdrop-blur-xl text-white font-bold text-[24px] md:text-[36px] lg:text-[48px]">
           {loadingText}
         </div>
       )}
@@ -209,7 +204,7 @@ const NFTStaking = () => {
             <div>
               <Typography size={48} className="font-bold">
                 <span className="text-secondary">
-                  {Number(Web3.utils.fromWei(totalReward, "ether"))}
+                  {Number(Web3.utils.fromWei(totalClaimedReward, "ether"))}
                 </span>{" "}
                 ${UnderlyingToken.symbol}
               </Typography>
@@ -346,6 +341,11 @@ const NFTStaking = () => {
           ))}
         </div>
       </div>
+      <TxSuccessDialog
+        open={successOpen}
+        setOpen={setSuccessOpen}
+        txHash={contractHash}
+      />
     </>
   );
 };

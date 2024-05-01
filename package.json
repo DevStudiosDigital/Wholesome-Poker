@@ -10,6 +10,7 @@
     "type:generate": "yarn typechain --target=ethers-v5 ./assets/**/*.json --out-dir=./types/contract"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@rainbow-me/rainbowkit": "^2.0.6",
     "@tanstack/react-query": "^5.32.0",

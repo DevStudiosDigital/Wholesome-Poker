@@ -10,15 +10,17 @@ import Link from "next/link";
 import NFTStakingIcon from "../icons/nft-staking-icon";
 import TokenStakingIcon from "../icons/token-staking-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { shortenAddress } from "@/lib/utils";
 
 const Header = () => {
   const { openConnectModal } = useConnectModal();
+  const { disconnect } = useDisconnect();
 
   const { address } = useAccount();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
       {menuOpen && (
@@ -66,6 +68,8 @@ const Header = () => {
           onClick={() => {
             if (!address && openConnectModal) {
               openConnectModal();
+            } else {
+              disconnect();
             }
           }}
         >
