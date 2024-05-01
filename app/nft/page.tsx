@@ -131,7 +131,7 @@ const NFTStaking = () => {
         abi: WPStakingContractABI,
         address: WPStakingContractAddress as `0x${string}`,
         functionName: "unstake",
-        args: [isAll ? ownedTokenIds : selectedNFTs],
+        args: [isAll ? stakedTokenIds : selectedNFTs],
       });
     }
   };
