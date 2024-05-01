@@ -52,7 +52,10 @@ export default function Home() {
             <Typography>Total Earned</Typography>
           </div>
         </div>
-        <button className="bg-secondary flex items-center justify-center py-6 gap-2 text-black rounded-[16px] md:rounded-[20px] px-0 lg:px-16 xl:px-32 hover:opacity-90">
+        <button
+          className="bg-secondary flex items-center justify-center py-6 gap-2 text-black rounded-[16px] md:rounded-[20px] px-0 lg:px-16 xl:px-32 hover:opacity-90"
+          onClick={handleClickConnectButton}
+        >
           {address ? (
             <span className="text-[24px] lg:text-[28px] font-bold">
               {shortenAddress(address)}
