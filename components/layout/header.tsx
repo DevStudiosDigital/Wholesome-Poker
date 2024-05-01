@@ -9,8 +9,15 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import NFTStakingIcon from "../icons/nft-staking-icon";
 import TokenStakingIcon from "../icons/token-staking-icon";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import { shortenAddress } from "@/lib/utils";
 
 const Header = () => {
+  const { openConnectModal } = useConnectModal();
+
+  const { address } = useAccount();
+
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
@@ -53,8 +60,16 @@ const Header = () => {
         <div className="hidden lg:block">
           <SocialButtons />
         </div>
-        <Button variant={"white"} size={"lg"}>
-          Connect wallet
+        <Button
+          variant={"white"}
+          size={"lg"}
+          onClick={() => {
+            if (!address && openConnectModal) {
+              openConnectModal();
+            }
+          }}
+        >
+          {address ? shortenAddress(address) : "Connect Wallet"}
         </Button>
         <div
           className="block lg:hidden cursor-pointer"
