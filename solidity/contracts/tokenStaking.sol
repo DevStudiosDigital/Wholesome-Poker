@@ -440,8 +440,14 @@ interface IBlastPoints {
   function configurePointsOperatorOnBehalf(address contractAddress, address operator) external;
 }
 
+interface IWholesomePokerStaking {
+    function ownerOf(uint256 tokenId) external view returns (address);
+}
 
 contract TokenStaking is Ownable {
+
+    // set hard cap staking limit
+    // interface to check if somebody has an nft or is staked
 
     struct Staker {
         address staker;  // Address of the user who staked tokens.
@@ -457,21 +463,25 @@ contract TokenStaking is Ownable {
     uint256 private rewardPerDayETH = 1;  // Reward rate per day per staked ETH.
 
     IERC20Metadata public USDB;  // ERC20 token for USDB.
-    IERC20Rebasing public constant USDBRebasing = IERC20Rebasing(0x4300000000000000000000000000000000000003);
+    IERC20Rebasing public USDBRebasing = IERC20Rebasing(0x4300000000000000000000000000000000000003);
+
+    IWholesomePokerStaking public wpStaking;        // Interface to interact with the staking contract.
+    IERC721 public NFT;                             // Interface to interact with the NFT contract.
 
     enum ContractState { OFF, OPEN }  // States of contract: OFF for not accepting stakes, OPEN for accepting stakes.
     ContractState public contractState = ContractState.OPEN;  // Initial state of the contract.
 
     constructor() {
         USDB = IERC20Metadata(usdbTokenAddress);
+        // wpStaking = IWholesomePokerStaking();
 
-        USDBRebasing.configure(YieldMode.CLAIMABLE); //configure claimable yield for USDB
+        // USDBRebasing.configure(YieldMode.CLAIMABLE); //configure claimable yield for USDB
 
-        IBlast(0x4300000000000000000000000000000000000002).configureClaimableYield();
-		IBlast(0x4300000000000000000000000000000000000002).configureGovernor(msg.sender);
-        IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
+        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableYield();
+		// IBlast(0x4300000000000000000000000000000000000002).configureGovernor(msg.sender);
+        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
 
-        IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800).configurePointsOperator(pointsOperator);
+        // IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800).configurePointsOperator(pointsOperator);
     }
 
     /**
@@ -488,9 +498,10 @@ contract TokenStaking is Ownable {
      * @param amountUSDB The amount of USDB tokens to stake.
      * @param amountETH The amount of ETH to stake.
      */
-    function stake(uint256 amountUSDB, uint256 amountETH) external payable isContractState(ContractState.OPEN) {
+    function stake(uint256 amountUSDB, uint256 amountETH, uint25 stakedTokenId) external payable isContractState(ContractState.OPEN) {
         require(amountUSDB > 0 || amountETH > 0, "Must stake a non-zero amount of USDB or ETH");
         require(msg.value == amountETH, "ETH sent must match the specified amountETH");
+        require(NFT.balanceOf(msg.sender) > 0 || wpStaking.ownerOf(stakedTokenId) == msg.sender, "Not NFT Holder Or Staker!");
 
         updateRewards(msg.sender);
 
@@ -560,6 +571,59 @@ contract TokenStaking is Ownable {
         return calculateReward(staker) + stakers[staker].pointsEarned;
     }
 
+    ///
+    /// SETTERS
+    ///
+
+    /**
+     * @dev Sets the contract's operational state.
+     * @param newState The new state to set the contract to (0 for OFF, 1 for OPEN).
+     */
+    function setContractState(uint256 newState) external onlyOwner {
+        require(newState < 2, "Invalid State!");
+        contractState = ContractState(newState);
+    }
+
+    /**
+     * @dev Sets the reward rate per day for staked USDB.
+     * @param _rewardPerDayUSDB The new reward rate per day per staked USDB.
+     */
+    function setRewardPerDayUSDB(uint256 _rewardPerDayUSDB) external onlyOwner {
+        rewardPerDayUSDB = _rewardPerDayUSDB;
+    }
+
+    /**
+     * @dev Sets the reward rate per day for staked ETH.
+     * @param _rewardPerDayETH The new reward rate per day per staked ETH.
+     */
+    function setRewardPerDayETH(uint256 _rewardPerDayETH) external onlyOwner {
+        rewardPerDayETH = _rewardPerDayETH;
+    }
+
+    /**
+     * @dev Sets the USDB ERC20 token contract.
+     * @param _USDB The address of the USDB ERC20 token contract.
+     */
+    function setUSDB(address _USDB) external onlyOwner {
+        USDB = IERC20Metadata(_USDB);
+        USDBRebasing = IERC20Rebasing(_USDB);
+    }
+
+    /**
+     * @dev Sets the wpStaking contract.
+     * @param _new The address of the wpStaking contract.
+     */
+    function setWPStaking(address _new) external onlyOwner {
+        wpStaking = IWholesomePokerStaking(_new);
+    }
+
+    /**
+     * @dev Sets the address of the NFT contract. This can only be called by the contract owner.
+     * @param _nftAddress The address of the IERC721Enumerable contract.
+     */
+    function setNFTAddress(address _nftAddress) external onlyOwner {
+        NFT = IERC721(_nftAddress);
+    }
 
     ///
     /// MISC
