@@ -28,6 +28,19 @@ export const getReward = async (tokenId: number) => {
     return reward.toString();
   } catch (error) {
     console.error("[getReward]: ", error);
-    return 0;
+    return "0";
+  }
+};
+
+export const getTotalEarned = async (address: string) => {
+  try {
+    const reward = (await WPStakingContractInstance.methods
+      .totalClaimed(address)
+      .call()) as BigInt;
+
+    return reward.toString();
+  } catch (error) {
+    console.error("[getReward]: ", error);
+    return "0";
   }
 };

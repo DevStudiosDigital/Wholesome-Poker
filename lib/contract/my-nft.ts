@@ -1,6 +1,7 @@
-import { MyNFTContractAddress } from "@/data/config";
+import { AlchemyApiKey, MyNFTContractAddress } from "@/data/config";
 import { web3Instance } from "../web3";
 import { MyNFTContractABI } from "@/assets/abi";
+import axios from "axios";
 
 const MyNFTContractInstance = new web3Instance.eth.Contract(
   MyNFTContractABI,
@@ -9,10 +10,18 @@ const MyNFTContractInstance = new web3Instance.eth.Contract(
 
 export const getOwnedNFTs = async (owner: string) => {
   try {
-    const tokenIds = (await MyNFTContractInstance.methods
-      .ownedTokens(owner)
-      .call()) as BigInt[];
-    return tokenIds.map((token) => Number(token.toString()));
+    const tokens = await axios.get(
+      `https://eth-sepolia.g.alchemy.com/nft/v3/${AlchemyApiKey}/getNFTsForOwner`,
+      {
+        params: {
+          owner,
+          contractAddresses: [MyNFTContractAddress],
+          pageSize: 100000,
+        },
+      }
+    );
+    console.log(tokens);
+    return tokens.data.ownedNfts.map((token: any) => Number(token.tokenId));
   } catch (error) {
     console.error("[getOwnedNFTs]: ", error);
     return [];
