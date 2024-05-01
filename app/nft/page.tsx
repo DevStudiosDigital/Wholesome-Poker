@@ -77,6 +77,7 @@ const NFTStaking = () => {
 
     return () => clearTimeout(timeoutId);
   }, [address]);
+  
 
   useEffect(() => {
     if (isConfirmed) {
