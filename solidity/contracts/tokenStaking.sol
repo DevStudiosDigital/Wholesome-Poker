@@ -477,7 +477,7 @@ contract TokenStaking is Ownable {
     ContractState public contractState = ContractState.OPEN;  // Initial state of the contract.
 
     constructor() {
-        USDB = IERC20Metadata(usdbTokenAddress);
+        // USDB = IERC20Metadata(usdbTokenAddress);
         // wpStaking = IWholesomePokerStaking();
 
         // USDBRebasing.configure(YieldMode.CLAIMABLE); //configure claimable yield for USDB
