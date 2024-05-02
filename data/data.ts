@@ -14,3 +14,11 @@ export const GuideData = [
       "Every airdrop season comes with lavish $QORPO rewards for holders.",
   },
 ];
+
+export const NFTStakingLoadingMessages = {
+  Confirming: "Confirming...",
+  Approving: "Approving...",
+  Staking: "Staking...",
+  Unstaking: "Unstaking...",
+  Claiming: "Claiming...",
+};
