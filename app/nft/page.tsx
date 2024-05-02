@@ -31,7 +31,7 @@ import { getTotalRewardsAPI } from "@/services/wp.service";
 import Web3 from "web3";
 
 enum TabLabels {
-  Stacked = "Stacked",
+  Stacked = "Staked",
   InWallet = "In Wallet",
 }
 

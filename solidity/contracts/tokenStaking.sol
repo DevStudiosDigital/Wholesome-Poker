@@ -446,9 +446,6 @@ interface IWholesomePokerStaking {
 
 contract TokenStaking is Ownable {
 
-    // set hard cap staking limit
-    // interface to check if somebody has an nft or is staked
-
     struct Staker {
         address staker;  // Address of the user who staked tokens.
         uint256 stakedUSDB;  // Total amount of USDB staked by the user.
@@ -459,8 +456,16 @@ contract TokenStaking is Ownable {
 
     mapping(address => Staker) public stakers;  // Maps user addresses to their staking information.
 
-    uint256 private rewardPerDayUSDB = 1;  // Reward rate per day per staked USDB.
-    uint256 private rewardPerDayETH = 1;  // Reward rate per day per staked ETH.
+    uint256 public rewardPerDayUSDB = 1;  // Reward rate per day per staked USDB.
+    uint256 public rewardPerDayETH = 1;  // Reward rate per day per staked ETH.
+
+    uint256 public stakeLimitUSDB = 100000 * 10 ** 18;  // max staked USDB.
+    uint256 public stakeLimitETH = 30;  // max staked ETH.
+
+    uint256 public totalStakedUSDB;  // total staked USDB.
+    uint256 public totalStakedETH;  // total staked ETH.
+
+
 
     IERC20Metadata public USDB;  // ERC20 token for USDB.
     IERC20Rebasing public USDBRebasing = IERC20Rebasing(0x4300000000000000000000000000000000000003);
@@ -502,6 +507,7 @@ contract TokenStaking is Ownable {
         require(amountUSDB > 0 || amountETH > 0, "Must stake a non-zero amount of USDB or ETH");
         require(msg.value == amountETH, "ETH sent must match the specified amountETH");
         require(NFT.balanceOf(msg.sender) > 0 || wpStaking.ownerOf(stakedTokenId) == msg.sender, "Not NFT Holder Or Staker!");
+        require(amountETH + totalStakedETH <= stakeLimitETH && amountUSDB + totalStakedUSDB < stakeLimitUSDB, "Stake Limit Exceeded!");
 
         updateRewards(msg.sender);
 
@@ -527,6 +533,9 @@ contract TokenStaking is Ownable {
 
         stakers[msg.sender].stakedUSDB -= amountUSDB;
         stakers[msg.sender].stakedETH -= amountETH;
+
+        totalStakedUSDB -= amountUSDB;
+        totalStakedETH -= amountUSDB;
 
         if (amountUSDB > 0) {
             USDB.transfer(msg.sender, amountUSDB);
@@ -598,6 +607,22 @@ contract TokenStaking is Ownable {
      */
     function setRewardPerDayETH(uint256 _rewardPerDayETH) external onlyOwner {
         rewardPerDayETH = _rewardPerDayETH;
+    }
+
+    /**
+     * @dev Sets the limit for staked ETH.
+     * @param _newLimit The new limit for staked ETH.
+     */
+    function setStakeLimitETH(uint256 _newLimit) external onlyOwner {
+        stakeLimitETH = _newLimit;
+    }
+
+    /**
+     * @dev Sets the limit for staked USDB.
+     * @param _newLimit The new limit for staked USDB.
+     */
+    function setStakeLimitUSDB(uint256 _newLimit) external onlyOwner {
+        stakeLimitUSDB = _newLimit;
     }
 
     /**
