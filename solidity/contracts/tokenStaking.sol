@@ -503,7 +503,7 @@ contract TokenStaking is Ownable {
      * @param amountUSDB The amount of USDB tokens to stake.
      * @param amountETH The amount of ETH to stake.
      */
-    function stake(uint256 amountUSDB, uint256 amountETH, uint25 stakedTokenId) external payable isContractState(ContractState.OPEN) {
+    function stake(uint256 amountUSDB, uint256 amountETH, uint256 stakedTokenId) external payable isContractState(ContractState.OPEN) {
         require(amountUSDB > 0 || amountETH > 0, "Must stake a non-zero amount of USDB or ETH");
         require(msg.value == amountETH, "ETH sent must match the specified amountETH");
         require(NFT.balanceOf(msg.sender) > 0 || wpStaking.ownerOf(stakedTokenId) == msg.sender, "Not NFT Holder Or Staker!");
