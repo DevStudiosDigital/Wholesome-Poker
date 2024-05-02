@@ -33,7 +33,7 @@ import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
 import Link from "next/link";
 
 enum TabLabels {
-  Stacked = "Stacked",
+  Stacked = "Staked",
   InWallet = "In Wallet",
 }
 
