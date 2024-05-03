@@ -460,7 +460,7 @@ contract TokenStaking is Ownable {
     uint256 public rewardPerDayETH = 1;  // Reward rate per day per staked ETH.
 
     uint256 public stakeLimitUSDB = 100000 * 10 ** 18;  // max staked USDB.
-    uint256 public stakeLimitETH = 30;  // max staked ETH.
+    uint256 public stakeLimitETH = 30 ether;  // max staked ETH.
 
     uint256 public totalStakedUSDB;  // total staked USDB.
     uint256 public totalStakedETH;  // total staked ETH.
@@ -514,6 +514,9 @@ contract TokenStaking is Ownable {
         stakers[msg.sender].stakedUSDB += amountUSDB;
         stakers[msg.sender].stakedETH += amountETH;
 
+        totalStakedUSDB += amountUSDB;
+        totalStakedETH += amountETH;
+
         if (amountUSDB > 0) {
             bool sentUSDB = USDB.transferFrom(msg.sender, address(this), amountUSDB);
             require(sentUSDB, "Failed to transfer USDB tokens");
@@ -535,7 +538,7 @@ contract TokenStaking is Ownable {
         stakers[msg.sender].stakedETH -= amountETH;
 
         totalStakedUSDB -= amountUSDB;
-        totalStakedETH -= amountUSDB;
+        totalStakedETH -= amountETH;
 
         if (amountUSDB > 0) {
             USDB.transfer(msg.sender, amountUSDB);
