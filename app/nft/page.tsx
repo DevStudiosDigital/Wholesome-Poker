@@ -7,7 +7,7 @@ import Image from "next/image";
 import LogoIcon from "@/components/icons/logo-icon";
 import { GuideData, NFTStakingLoadingMessages } from "@/data/data";
 import KingImage from "@/assets/images/king.png";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, SquareArrowOutUpRight, X } from "lucide-react";
 import DiamondIcon from "@/components/icons/diamond-icon";
 import {
   useAccount,
@@ -27,13 +27,10 @@ import {
   WPStakingContractAddress,
 } from "@/data/config";
 import { MyNFTContractABI, WPStakingContractABI } from "@/assets/abi";
-import {
-  getTotalClaimableRewardsAPI,
-  getTotalEarnedAPI,
-} from "@/services/wp.service";
+import { getTotalClaimableRewardsAPI } from "@/services/wp.service";
 import Web3 from "web3";
-import TxSuccessDialog from "@/components/common/tx-success-dialog";
 import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
+import Link from "next/link";
 
 enum TabLabels {
   Stacked = "Staked",
@@ -189,9 +186,26 @@ const NFTStaking = () => {
 
   return (
     <>
-      {(isPending || isConfirming) && (
-        <div className="w-screen h-screen fixed z-50 left-0 top-0 flex items-center justify-center bg-black/40 backdrop-blur-xl text-white font-bold text-[24px] md:text-[36px] lg:text-[48px]">
-          {loadingText}
+      {(isPending || isConfirming || successOpen) && (
+        <div className="w-screen h-screen fixed z-50 left-0 top-0 flex flex-col gap-4 items-center justify-center bg-black/40 backdrop-blur-xl text-white font-bold text-[24px] md:text-[36px] lg:text-[48px]">
+          {successOpen && (
+            <button
+              className="fixed top-5 right-5 z-[55] cursor-pointer"
+              onClick={() => setSuccessOpen(false)}
+            >
+              <X />
+            </button>
+          )}
+          {successOpen ? "Success" : loadingText}
+          <Link
+            href={`https://sepolia.etherscan.io/tx/${contractHash}`}
+            target="_blank"
+            className={`flex items-center gap-2 text-[16px] ${
+              successOpen ? "visible" : "invisible"
+            }`}
+          >
+            View On Explorer <SquareArrowOutUpRight size={14} />
+          </Link>
         </div>
       )}
       <div className=" custom-scrollbar">
@@ -341,11 +355,6 @@ const NFTStaking = () => {
           ))}
         </div>
       </div>
-      <TxSuccessDialog
-        open={successOpen}
-        setOpen={setSuccessOpen}
-        txHash={contractHash}
-      />
     </>
   );
 };

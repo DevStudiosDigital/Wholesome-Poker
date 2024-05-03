@@ -22,3 +22,9 @@ export const NFTStakingLoadingMessages = {
   Unstaking: "Unstaking...",
   Claiming: "Claiming...",
 };
+
+export const TokenStakingLoadingMessages = {
+  Approving: "Approving...",
+  Staking: "Staking...",
+  Unstaking: "Unstaking",
+};
