@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  wallet_address String  @id @db.VarChar(42)
+  email          String? @unique @db.VarChar(255)
+  first_name     String? @db.VarChar(255)
+  image_url      String? @default("1710500683572_tc65dn.png")
+  last_name      String? @db.VarChar(255)
+  location       String? @db.VarChar(255)
+  username       String? @unique @db.VarChar(255)
+  verified       Boolean @default(false)
+  entries        Entry[]
+}
+
+model Jackpot {
+  id              Int      @id @default(autoincrement())
+  jackpot_address String   @unique @db.VarChar(255)
+  lottery_address String   @db.VarChar(255)
+  name            String   @db.VarChar(50)
+  created_at      DateTime @default(now())
+  entries         Entry[]
+}
+
+model Entry {
+  id              Int      @id @default(autoincrement())
+  user_address    String
+  jackpot_id      Int
+  numbers         String
+  nft_id          Int
+  automation_days Int
+  created_at      DateTime @default(now())
+  jackpot         Jackpot  @relation(fields: [jackpot_id], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [user_address], references: [wallet_address], onDelete: Cascade)
+}
+
+model PKRUser {
+  wallet_address       String   @id @db.VarChar(42)
+  previous_points      Int      @default(0)
+  staked_eth           Int      @default(0)
+  staked_usdb          Int      @default(0)
+  stake_eth_timestamp  DateTime @default(now())
+  stake_usdb_timestamp DateTime @default(now())
+}

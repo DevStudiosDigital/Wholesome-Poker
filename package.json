@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type:generate": "yarn typechain --target=ethers-v5 ./assets/**/*.json --out-dir=./types/contract"
+    "type:generate": "yarn typechain --target=ethers-v5 ./assets/**/*.json --out-dir=./types/contract",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@rainbow-me/rainbowkit": "^2.0.6",
@@ -21,6 +23,7 @@
     "lucide-react": "^0.372.0",
     "next": "14.2.2",
     "pino-pretty": "^11.0.0",
+    "prisma": "^5.9.1",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0",
