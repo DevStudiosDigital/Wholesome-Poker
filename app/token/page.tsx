@@ -28,6 +28,7 @@ import { TokenStakingLoadingMessages } from "@/data/data";
 import { ERC20ContractABI, TokenStakingContractABI } from "@/assets/abi";
 import Link from "next/link";
 import useStakerInfo from "@/hooks/useStakerInfo";
+import useStakerPoint from "@/hooks/useStakerPoint";
 
 const TokenStaking = () => {
   const { address } = useAccount();
@@ -38,6 +39,7 @@ const TokenStaking = () => {
     useUSDBBalance();
   const { data: ethBalance } = useBalance({ address });
   const { staker, loadStaker } = useStakerInfo();
+  const { point, loadPoint } = useStakerPoint();
 
   const {
     data: hash,
@@ -169,7 +171,11 @@ const TokenStaking = () => {
             <Typography size={48} className="font-bold">
               <span className="text-secondary">
                 {staker?.stakedUSDB
-                  ? Web3.utils.fromWei(staker.stakedUSDB, "ether")
+                  ? Number(
+                      Number(
+                        Web3.utils.fromWei(staker.stakedUSDB, "ether")
+                      ).toFixed(2)
+                    )
                   : "-"}
               </span>
               USDB
@@ -181,7 +187,11 @@ const TokenStaking = () => {
             <Typography size={48} className="font-bold">
               <span className="text-secondary">
                 {staker?.stakedETH
-                  ? Web3.utils.fromWei(staker.stakedETH, "ether")
+                  ? Number(
+                      Number(
+                        Web3.utils.fromWei(staker.stakedETH, "ether")
+                      ).toFixed(4)
+                    )
                   : "-"}
               </span>
               ETH
@@ -191,7 +201,10 @@ const TokenStaking = () => {
 
           <div className="bg-secondary px-6 md:px-10 py-6 rounded-[16px] w-full lg:w-0 grow text-black">
             <Typography size={48} className="font-bold">
-              {staker?.pointsEarned ? staker.pointsEarned : "-"}FRP
+              {point
+                ? Number(Number(Web3.utils.fromWei(point, "ether")).toFixed(4))
+                : "-"}
+              FRP
             </Typography>
             <Typography size={24}>RFP total earned</Typography>
           </div>
@@ -237,9 +250,9 @@ const TokenStaking = () => {
               </StakeButton>
               <StakeButton
                 className="!w-1/3 grow"
-                onClick={() => handleUnstake(0, inputAmount)}
+                onClick={() => handleUnstake(inputAmount, 0)}
               >
-                Unstake ETH
+                Unstake USDB
               </StakeButton>
               <StakeButton
                 className="!bg-primary text-white !w-1/3 grow"
@@ -249,9 +262,9 @@ const TokenStaking = () => {
               </StakeButton>
               <StakeButton
                 className="!w-1/3 grow"
-                onClick={() => handleUnstake(inputAmount, 0)}
+                onClick={() => handleUnstake(0, inputAmount)}
               >
-                Unstake USDB
+                Unstake ETH
               </StakeButton>
             </div>
           </div>

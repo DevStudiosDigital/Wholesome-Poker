@@ -26,3 +26,15 @@ export const getStakerInfo = async (stakerAddress: string) => {
     throw error;
   }
 };
+
+export const getPoints = async (stakerAddress: string) => {
+  try {
+    const point = (await TokenStakingContractInstance.methods
+      .getPoints(stakerAddress)
+      .call()) as BigInt;
+    return point.toString();
+  } catch (error) {
+    console.error("[getPoints]: ", error);
+    throw error;
+  }
+}
