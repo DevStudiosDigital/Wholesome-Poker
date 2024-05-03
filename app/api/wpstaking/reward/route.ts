@@ -2,10 +2,10 @@ import { getReward } from "@/lib/contract/wp-staking";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const searchParams1 = new URLSearchParams(new URL(req.url).search);
+  const searchParams = new URLSearchParams(new URL(req.url).search);
 
   const tokenIds: number[] = JSON.parse(
-    searchParams1.get("tokenIds") as string
+    searchParams.get("tokenIds") as string
   );
 
   let reward = BigInt(0);
