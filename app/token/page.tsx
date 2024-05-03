@@ -74,6 +74,7 @@ const TokenStaking = () => {
         loadingMessage === TokenStakingLoadingMessages.Unstaking
       ) {
         loadUSDBBalance();
+        loadStaker();
       }
     }
   }, [isConfirmed]);
