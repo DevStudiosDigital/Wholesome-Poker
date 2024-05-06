@@ -35,7 +35,7 @@ export async function POST(
 ) {
   try {
     const data: UpdateUserScoreType = await req.json();
-    let user: IPKRUser | undefined | null = await prisma.pKRUser.findUnique({
+    let user = await prisma.pKRUser.findUnique({
       where: {
         wallet_address: params.address.toLowerCase(),
       },
