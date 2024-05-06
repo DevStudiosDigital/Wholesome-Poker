@@ -26,8 +26,8 @@ export const clacUserScore = (user: IPKRUser) => {
   );
 
   const score =
-    user.previous_points +
-    user.staked_eth * rate * ethStakedDay +
-    user.staked_usdb * rate * usdbStakedDay;
+    Number(user.previous_points) +
+    Number(user.staked_eth) * rate * ethStakedDay +
+    Number(user.staked_usdb) * rate * usdbStakedDay;
   return score;
 };

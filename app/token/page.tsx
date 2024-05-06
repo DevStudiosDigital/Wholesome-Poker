@@ -155,6 +155,7 @@ const TokenStaking = () => {
 
   return (
     <>
+      {String(isConfirmed)} {String(isConfirming)}
       {(isPending || isConfirming || successOpen) && (
         <div className="w-screen h-screen fixed z-50 left-0 top-0 flex flex-col gap-4 items-center justify-center bg-black/40 backdrop-blur-xl text-white font-bold text-[24px] md:text-[36px] lg:text-[48px]">
           {successOpen && (

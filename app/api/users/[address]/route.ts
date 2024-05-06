@@ -62,8 +62,8 @@ export async function POST(
     }
     const newScore = clacUserScore(user);
     user.previous_points = newScore;
-    user.staked_eth = Math.max(0, user.staked_eth + data.ethAmount);
-    user.staked_usdb = Math.max(0, user.staked_usdb + data.usdbAmount);
+    user.staked_eth = Math.max(0, Number(user.staked_eth) + data.ethAmount);
+    user.staked_usdb = Math.max(0, Number(user.staked_usdb) + data.usdbAmount);
 
     await prisma.pKRUser.update({
       where: {
