@@ -128,7 +128,8 @@ const TokenStaking = () => {
         args: [usdb, eth, stakedTokenIds.length > 0 ? stakedTokenIds[0] : 1],
         value: BigInt(eth),
       });
-      updateUserAPI(address, amountETH, amountUSDB);
+      await updateUserAPI(address, amountETH, amountUSDB);
+      loadUsers();
     } catch (error) {
       console.error("[handleStake]: ", error);
     }
@@ -146,7 +147,8 @@ const TokenStaking = () => {
         functionName: "unstake",
         args: [usdb, eth],
       });
-      updateUserAPI(address, amountETH, amountUSDB);
+      await updateUserAPI(address, amountETH, amountUSDB);
+      loadUsers();
     } catch (error) {
       console.error("[handleStake]: ", error);
     }
