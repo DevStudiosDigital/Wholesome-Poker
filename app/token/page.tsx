@@ -9,7 +9,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Lightbulb, SquareArrowOutUpRight, X } from "lucide-react";
 import SpadeIcon from "@/components/icons/spade-icon";
-import ChipImage from "@/assets/images/chip-image.png";
 import useUSDBBalance from "@/hooks/useUSDBBalance";
 import Web3 from "web3";
 import {
@@ -21,6 +20,7 @@ import {
 import { getStakedNFTsAPI } from "@/services/nft.service";
 import { getAllownaceAPI } from "@/services/token.service";
 import {
+  DependencyDelayTime,
   TokenStakingContractAddress,
   USDBContractAddress,
 } from "@/data/config";
@@ -28,6 +28,8 @@ import { TokenStakingLoadingMessages } from "@/data/data";
 import { ERC20ContractABI, TokenStakingContractABI } from "@/assets/abi";
 import Link from "next/link";
 import useStakerInfo from "@/hooks/useStakerInfo";
+import { getAllUsersAPI, updateUserAPI } from "@/services/user.service";
+import { clacUserScore, shortenAddress } from "@/lib/utils";
 
 const TokenStaking = () => {
   const { address } = useAccount();
@@ -38,6 +40,7 @@ const TokenStaking = () => {
     useUSDBBalance();
   const { data: ethBalance } = useBalance({ address });
   const { staker, loadStaker } = useStakerInfo();
+  const [users, setUsers] = useState<IPKRUser[]>([]);
 
   const {
     data: hash,
@@ -79,6 +82,23 @@ const TokenStaking = () => {
     }
   }, [isConfirmed]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(loadUsers, DependencyDelayTime);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  const loadUsers = async () => {
+    const u: IPKRUser[] = await getAllUsersAPI();
+    setUsers(
+      u.map((value) => ({ ...value, current_point: clacUserScore(value) }))
+    );
+  };
+
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
+
   const handleStake = async (amountUSDB: number, amountETH: number) => {
     if (!address) return;
     try {
@@ -113,6 +133,12 @@ const TokenStaking = () => {
         args: [usdb, eth, stakedTokenIds.length > 0 ? stakedTokenIds[0] : 1],
         value: BigInt(eth),
       });
+      updateUserAPI(
+        address,
+        amountETH ? "ETH" : "USDB",
+        amountETH ? amountETH : amountUSDB,
+        true
+      );
     } catch (error) {
       console.error("[handleStake]: ", error);
     }
@@ -130,6 +156,12 @@ const TokenStaking = () => {
         functionName: "unstake",
         args: [usdb, eth],
       });
+      updateUserAPI(
+        address,
+        amountETH ? "ETH" : "USDB",
+        amountETH ? amountETH : amountUSDB,
+        false
+      );
     } catch (error) {
       console.error("[handleStake]: ", error);
     }
@@ -202,12 +234,22 @@ const TokenStaking = () => {
             <div>
               <span className="text-[16px] md:text-[20px]">Balance USDB</span>
               <br />
-              <span className="font-bold">1000USDB</span>
+              <span className="font-bold">
+                {address
+                  ? Number(Web3.utils.fromWei(usdbBalance, "ether"))
+                  : "-"}{" "}
+                USDB
+              </span>
             </div>
             <div className="mx-auto">
-              <span className="text-[16px] md:text-[20px]">Balance USDB</span>
+              <span className="text-[16px] md:text-[20px]">Balance ETH</span>
               <br />
-              <span className="font-bold">1000USDB</span>
+              <span className="font-bold">
+                {isNaN(Number(ethBalance?.formatted))
+                  ? "-"
+                  : Number(Number(ethBalance?.formatted).toFixed(4))}{" "}
+                ETH
+              </span>
             </div>
           </div>
         </div>
@@ -331,16 +373,19 @@ const TokenStaking = () => {
                 <tr className="[&_th]:py-3 [&_th]:pl-4 [&_th]:text-[14px] lg:[&_th]:text-[18px] [&_th]:bg-card text-left">
                   <th className="rounded-l-[8px]">Rank</th>
                   <th>Wallet</th>
-                  <th>Score</th>
                   <th className="rounded-r-[8px] text-ellipsis text-nowrap">
-                    Leaderboard Reward
+                    Score
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {Array(8)
-                  .fill(0)
-                  .map((_, ind) => (
+                {users
+                  .sort(
+                    (a, b) =>
+                      (a.current_point ? a.current_point : 0) -
+                      (b.current_point ? b.current_point : 0)
+                  )
+                  .map((user, ind) => (
                     <tr
                       className="[&_td]:py-3 [&_td]:pl-4 [&_td]:text-[14px] lg:[&_td]:text-[18px] [&_td]:bg-card mt-2"
                       key={ind}
@@ -348,24 +393,16 @@ const TokenStaking = () => {
                       <td className="rounded-l-[8px]">{ind + 1}</td>
                       <td>
                         <span className="hidden md:block">
-                          0x54be3a...4c409c5e
+                          {shortenAddress(user.wallet_address)}
                         </span>
-                        <span className="block md:hidden">0x54be3a...</span>
+                        <span className="block md:hidden">
+                          {user.wallet_address.slice(0, 6)}...
+                        </span>
                       </td>
                       <td>
                         <div className="text-sky flex items-center gap-2">
                           <SpadeIcon className="w-3 text-white fill-white" />{" "}
-                          123,405.17
-                        </div>
-                      </td>
-                      <td className="rounded-r-[8px]">
-                        <div className="flex items-center gap-2">
-                          <Image
-                            src={ChipImage}
-                            alt="chip"
-                            className="w-[18px]"
-                          />{" "}
-                          10,000.00
+                          {user.current_point}
                         </div>
                       </td>
                     </tr>
