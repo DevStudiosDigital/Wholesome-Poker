@@ -95,10 +95,6 @@ const TokenStaking = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
-
   const handleStake = async (amountUSDB: number, amountETH: number) => {
     if (!address) return;
     try {
@@ -126,19 +122,14 @@ const TokenStaking = () => {
       const usdb = Web3.utils.toWei(amountUSDB, "ether");
       const eth = Web3.utils.toWei(amountETH, "ether");
       setLoadingMessage(TokenStakingLoadingMessages.Staking);
-      writeContractAsync({
+      await writeContractAsync({
         abi: TokenStakingContractABI,
         address: TokenStakingContractAddress as `0x${string}`,
         functionName: "stake",
         args: [usdb, eth, stakedTokenIds.length > 0 ? stakedTokenIds[0] : 1],
         value: BigInt(eth),
       });
-      updateUserAPI(
-        address,
-        amountETH ? "ETH" : "USDB",
-        amountETH ? amountETH : amountUSDB,
-        true
-      );
+      updateUserAPI(address, amountETH, amountUSDB);
     } catch (error) {
       console.error("[handleStake]: ", error);
     }
@@ -150,18 +141,13 @@ const TokenStaking = () => {
       const usdb = Web3.utils.toWei(amountUSDB, "ether");
       const eth = Web3.utils.toWei(amountETH, "ether");
       setLoadingMessage(TokenStakingLoadingMessages.Unstaking);
-      writeContractAsync({
+      await writeContractAsync({
         abi: TokenStakingContractABI,
         address: TokenStakingContractAddress as `0x${string}`,
         functionName: "unstake",
         args: [usdb, eth],
       });
-      updateUserAPI(
-        address,
-        amountETH ? "ETH" : "USDB",
-        amountETH ? amountETH : amountUSDB,
-        false
-      );
+      updateUserAPI(address, amountETH, amountUSDB);
     } catch (error) {
       console.error("[handleStake]: ", error);
     }

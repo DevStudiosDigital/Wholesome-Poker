@@ -16,13 +16,18 @@ export const clacUserScore = (user: IPKRUser) => {
   const day = 24 * 60 * 60 * 1000;
   const rate = 1;
   const now = new Date().getTime();
+
+  const ethStakedDay = Math.floor(
+    (now - new Date(user.stake_eth_timestamp).getTime()) / day
+  );
+
+  const usdbStakedDay = Math.floor(
+    (now - new Date(user.stake_usdb_timestamp).getTime()) / day
+  );
+
   const score =
     user.previous_points +
-    user.staked_eth *
-      rate *
-      Math.floor(now - new Date(user.stake_eth_timestamp).getTime() / day) +
-    user.staked_usdb *
-      rate *
-      Math.floor(now - new Date(user.stake_usdb_timestamp).getTime() / day);
+    user.staked_eth * rate * ethStakedDay +
+    user.staked_usdb * rate * usdbStakedDay;
   return score;
 };

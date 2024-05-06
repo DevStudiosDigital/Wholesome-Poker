@@ -20,15 +20,13 @@ export async function getAllUsersAPI() {
 
 export async function updateUserAPI(
   address: string,
-  stakedToken: "ETH" | "USDB",
-  stakedAmount: number,
-  isStake: boolean
+  ethAmount: number,
+  usdbAmount: number
 ) {
   try {
     const response = await axios.post(`/api/users/${address}`, {
-      stakedToken,
-      stakedAmount,
-      isStake,
+      ethAmount,
+      usdbAmount,
     });
     return response.data.user;
   } catch (error) {
