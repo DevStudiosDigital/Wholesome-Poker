@@ -30,6 +30,7 @@ type UpdateUserScoreType = {
   isStake: boolean;
 };
 
+
 export async function POST(
   req: NextRequest,
   { params }: { params: { address: string } }

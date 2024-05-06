@@ -42,9 +42,9 @@ model Entry {
 
 model PKRUser {
   wallet_address       String   @id @db.VarChar(42)
-  previous_points      Int      @default(0)
-  staked_eth           Int      @default(0)
-  staked_usdb          Int      @default(0)
+  previous_points      Decimal  @default(0)
+  staked_eth           Decimal  @default(0)
+  staked_usdb          Decimal  @default(0)
   stake_eth_timestamp  DateTime @default(now())
   stake_usdb_timestamp DateTime @default(now())
 }
