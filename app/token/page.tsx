@@ -333,8 +333,7 @@ const TokenStaking = () => {
               <Lightbulb />
             </div>
             <div className="w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]">
-              Leaderboard updates occur hourly, on the hour (e.g., 2:00 PM, 3:00
-              PM, etc.).
+              Leaderboard updates occur after every stake or unstake
             </div>
           </div>
 
