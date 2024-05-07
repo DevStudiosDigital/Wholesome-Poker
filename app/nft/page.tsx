@@ -107,7 +107,6 @@ const NFTStaking = () => {
       setSuccessOpen(false);
     }
   }, [isConfirmed]);
-  
 
   const nftCounts = useMemo(
     () => ({
