@@ -31,6 +31,7 @@ import { getTotalClaimableRewardsAPI } from "@/services/wp.service";
 import Web3 from "web3";
 import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 enum TabLabels {
   Stacked = "Staked",
@@ -54,7 +55,7 @@ const NFTStaking = () => {
     isPending,
     isSuccess,
     status,
-    error: contractError,
+    error,
   } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -114,6 +115,12 @@ const NFTStaking = () => {
     }),
     [ownedTokenIds, stakedTokenIds]
   );
+
+  useEffect(() => {
+    if (error?.message) {
+      toast.error(error.message);
+    }
+  }, [error?.message]);
 
   const loadOwnedNFTs = async () => {
     if (address) {
