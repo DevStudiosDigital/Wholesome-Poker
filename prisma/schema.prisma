@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  wallet_address       String   @id @db.VarChar(42)
+  previous_points      Decimal  @default(0) @db.Decimal
+  staked_eth           Decimal  @default(0) @db.Decimal
+  staked_usdb          Decimal  @default(0) @db.Decimal
+  stake_eth_timestamp  DateTime @default(now())
+  stake_usdb_timestamp DateTime @default(now())
+}

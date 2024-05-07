@@ -4,8 +4,10 @@ import "./globals.css";
 import Header from "@/components/layout/header";
 import SideBar from "@/components/layout/side-bar";
 import RainbowKitWagmiConfig from "@/providers/rainbowkit-provider";
+import { ToastContainer } from "react-toastify";
 
 const font = Bricolage_Grotesque({ subsets: ["latin"] });
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: "Wholesome Poker",
@@ -22,6 +24,18 @@ export default function RootLayout({
       <body
         className={`${font.className} text-white bg-[#0F100F] relative overflow-auto leading-snug`}
       >
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <RainbowKitWagmiConfig>
           <div className="h-full w-full absolute top-0 left-0 overflow-hidden -z-10">
             <div className="relative h-full">

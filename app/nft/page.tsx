@@ -31,10 +31,17 @@ import { getTotalClaimableRewardsAPI } from "@/services/wp.service";
 import Web3 from "web3";
 import useTotalClaimedReward from "@/hooks/useTotalClaimedReward";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 enum TabLabels {
   Stacked = "Staked",
   InWallet = "In Wallet",
+}
+enum UserActions {
+  Stake,
+  Unstake,
+  StakeAll,
+  UnstakeAll,
 }
 
 const NFTStaking = () => {
@@ -48,7 +55,7 @@ const NFTStaking = () => {
     isPending,
     isSuccess,
     status,
-    error: contractError,
+    error,
   } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -56,6 +63,7 @@ const NFTStaking = () => {
       hash: contractHash,
     });
 
+  const [lastAction, setLastAction] = useState(UserActions.Stake);
   const [selectedNFTs, setSelectedNFTs] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState(TabLabels.InWallet);
   const [ownedTokenIds, setOwnedTokenIds] = useState<number[]>([]);
@@ -91,9 +99,15 @@ const NFTStaking = () => {
       } else if (loadingText === NFTStakingLoadingMessages.Claiming) {
         loadTotalClaimedReward();
         loadClaimableReward();
+      } else if (loadingText === NFTStakingLoadingMessages.Approving) {
+        setSuccessOpen(false);
+        handleStakeOrUnstake(lastAction === UserActions.Unstake);
       }
+    } else {
+      setSuccessOpen(false);
     }
   }, [isConfirmed]);
+  
 
   const nftCounts = useMemo(
     () => ({
@@ -102,6 +116,12 @@ const NFTStaking = () => {
     }),
     [ownedTokenIds, stakedTokenIds]
   );
+
+  useEffect(() => {
+    if (error?.message) {
+      toast.error(error.message);
+    }
+  }, [error?.message]);
 
   const loadOwnedNFTs = async () => {
     if (address) {
@@ -141,6 +161,7 @@ const NFTStaking = () => {
     }
 
     if (activeTab === TabLabels.InWallet) {
+      setLastAction(isAll ? UserActions.StakeAll : UserActions.Stake);
       const approval = await getIsApprovedForAllAPI(
         address,
         WPStakingContractAddress
@@ -153,7 +174,6 @@ const NFTStaking = () => {
           functionName: "setApprovalForAll",
           args: [WPStakingContractAddress, true],
         });
-        console.log("asdfasdfasdf");
       } else {
         setLoadingText(NFTStakingLoadingMessages.Staking);
         await writeContractAsync?.({
@@ -164,6 +184,7 @@ const NFTStaking = () => {
         });
       }
     } else {
+      setLastAction(isAll ? UserActions.UnstakeAll : UserActions.Unstake);
       setLoadingText(NFTStakingLoadingMessages.Unstaking);
       await writeContractAsync?.({
         abi: WPStakingContractABI,
@@ -294,8 +315,7 @@ const NFTStaking = () => {
 
           <div className="flex flex-col lg:flex-row lg:items-center gap-5 mb-6">
             <span className="font-bold text-[20px] lg:text-[28px] flex items-center gap-2">
-              My NFTs ({stakedTokenIds.length + ownedTokenIds.length}){" "}
-              <DiamondIcon />
+              My NFTs ({nftCounts[activeTab]}) <DiamondIcon />
             </span>
             <span>
               (Select which NFTs you’d like to{" "}
@@ -304,6 +324,13 @@ const NFTStaking = () => {
           </div>
 
           <div className="max-h-[700px] overflow-auto w-[calc(100%+10px)] pr-[10px] custom-scrollbar">
+            {nftCounts[activeTab] === 0 && (
+              <div className="py-24 text-center text-gray-400">
+                {activeTab === TabLabels.InWallet
+                  ? "You have no NFTs in your wallet"
+                  : "You have no staked NFTs"}
+              </div>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 ">
               {(activeTab === TabLabels.InWallet
                 ? ownedTokenIds
