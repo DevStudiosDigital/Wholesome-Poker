@@ -382,8 +382,8 @@ const TokenStaking = () => {
                 {users
                   .sort(
                     (a, b) =>
-                      (a.current_point ? a.current_point : 0) -
-                      (b.current_point ? b.current_point : 0)
+                      (b.current_point ? b.current_point : 0) -
+                      (a.current_point ? a.current_point : 0)
                   )
                   .map((user, ind) => (
                     <tr
@@ -399,7 +399,7 @@ const TokenStaking = () => {
                           {user.wallet_address.slice(0, 6)}...
                         </span>
                       </td>
-                      <td>
+                      <td className="rounded-r-[8px]">
                         <div className="text-sky flex items-center gap-2">
                           <SpadeIcon className="w-3 text-white fill-white" />{" "}
                           {user.current_point}
