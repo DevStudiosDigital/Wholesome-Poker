@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const users = await prisma.pKRUser.findMany();
+    const users = await prisma.user.findMany();
 
     return new Response(JSON.stringify({ users }), {
       status: 200,

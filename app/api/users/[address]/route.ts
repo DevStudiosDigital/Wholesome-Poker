@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { address: string } }
 ) {
   try {
-    const user = await prisma.pKRUser.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         wallet_address: params.address.toLowerCase(),
       },
@@ -35,14 +35,14 @@ export async function POST(
 ) {
   try {
     const data: UpdateUserScoreType = await req.json();
-    let user = (await prisma.pKRUser.findUnique({
+    let user = (await prisma.user.findUnique({
       where: {
         wallet_address: params.address.toLowerCase(),
       },
     })) as any;
 
     if (!user) {
-      user = await prisma.pKRUser.create({
+      user = await prisma.user.create({
         data: {
           wallet_address: params.address.toLowerCase(),
           staked_eth: data.ethAmount,
@@ -65,7 +65,7 @@ export async function POST(
     user.staked_eth = Math.max(0, Number(user.staked_eth) + data.ethAmount);
     user.staked_usdb = Math.max(0, Number(user.staked_usdb) + data.usdbAmount);
 
-    await prisma.pKRUser.update({
+    await prisma.user.update({
       where: {
         wallet_address: user.wallet_address,
       },
