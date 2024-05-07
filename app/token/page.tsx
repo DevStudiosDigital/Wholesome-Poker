@@ -31,6 +31,7 @@ import useStakerInfo from "@/hooks/useStakerInfo";
 import { getAllUsersAPI, updateUserAPI } from "@/services/user.service";
 import { clacUserScore, shortenAddress } from "@/lib/utils";
 import useStakerPoint from "@/hooks/useStakerPoint";
+import { toast } from "react-toastify";
 
 const TokenStaking = () => {
   const { address } = useAccount();
@@ -49,6 +50,7 @@ const TokenStaking = () => {
     writeContractAsync,
     isPending,
     isSuccess,
+    error,
   } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -72,6 +74,12 @@ const TokenStaking = () => {
   }, [address]);
 
   useEffect(() => {
+    if (error?.message) {
+      toast.error(error.message);
+    }
+  }, [error?.message]);
+
+  useEffect(() => {
     if (isConfirmed) {
       setSuccessOpen(true);
       if (
@@ -80,7 +88,12 @@ const TokenStaking = () => {
       ) {
         loadUSDBBalance();
         loadStaker();
+      } else if (loadingMessage === TokenStakingLoadingMessages.Approving) {
+        handleStake(inputAmount, 0);
+        setSuccessOpen(false);
       }
+    } else {
+      setSuccessOpen(false);
     }
   }, [isConfirmed]);
 
