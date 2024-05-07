@@ -210,7 +210,6 @@ const NFTStaking = () => {
             </button>
           )}
           {successOpen ? "Success" : loadingText}
-          {String(isConfirmed)}
           <Link
             href={`https://sepolia.etherscan.io/tx/${contractHash}`}
             target="_blank"
