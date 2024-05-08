@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type:generate": "yarn typechain --target=ethers-v5 ./assets/**/*.json --out-dir=./types/contract",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "type:generate": "yarn typechain --target=ethers-v5 ./assets/**/*.json --out-dir=./types/contract"
   },
   "dependencies": {
     "@prisma/client": "^5.9.1",
