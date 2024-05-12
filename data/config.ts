@@ -1,3 +1,6 @@
+export const AppMode: "testnet" | "mainnet" =
+  (process.env.NEXT_PUBLIC_APP_MODE as any) || "testnet";
+
 export const MyNFTContractAddress =
   process.env.NEXT_PUBLIC_MyNFT_CONTRACT_ADDRESS || "";
 export const MyTokenContractAddress =
@@ -22,3 +25,8 @@ export const UnderlyingNFT = {
   symbol: "MNFT",
   name: "MyNFT",
 };
+
+export const AlchemyApiUrl =
+  AppMode === "testnet"
+    ? "https://eth-sepolia.g.alchemy.com"
+    : "https://eth-mainnet.g.alchemy.com";

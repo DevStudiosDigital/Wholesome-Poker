@@ -10,7 +10,8 @@ import {
 import { braveWallet } from "@rainbow-me/rainbowkit/wallets";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { polygon, sepolia } from "viem/chains";
+import { mainnet, sepolia } from "viem/chains";
+import { AppMode } from "@/data/config";
 
 const { wallets } = getDefaultWallets({
   appName: "Wholesome Poker",
@@ -20,7 +21,7 @@ const { wallets } = getDefaultWallets({
 const config = getDefaultConfig({
   appName: "Wholesome Poker",
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
-  chains: [sepolia],
+  chains: [AppMode === "mainnet" ? mainnet : sepolia],
   ssr: true,
   wallets: [
     ...wallets,

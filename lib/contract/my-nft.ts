@@ -1,4 +1,4 @@
-import { AlchemyApiKey, MyNFTContractAddress } from "@/data/config";
+import { AlchemyApiKey, AlchemyApiUrl, MyNFTContractAddress } from "@/data/config";
 import { web3Instance } from "../web3";
 import { MyNFTContractABI } from "@/assets/abi";
 import axios from "axios";
@@ -11,7 +11,7 @@ const MyNFTContractInstance = new web3Instance.eth.Contract(
 export const getOwnedNFTs = async (owner: string) => {
   try {
     const tokens = await axios.get(
-      `https://eth-sepolia.g.alchemy.com/nft/v3/${AlchemyApiKey}/getNFTsForOwner`,
+      `${AlchemyApiUrl}/nft/v3/${AlchemyApiKey}/getNFTsForOwner`,
       {
         params: {
           owner,
