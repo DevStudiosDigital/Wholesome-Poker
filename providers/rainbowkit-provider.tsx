@@ -6,6 +6,7 @@ import {
   RainbowKitProvider,
   getDefaultWallets,
   getDefaultConfig,
+  darkTheme,
 } from "@rainbow-me/rainbowkit";
 import { braveWallet } from "@rainbow-me/rainbowkit/wallets";
 import { WagmiProvider } from "wagmi";
@@ -38,11 +39,17 @@ interface RainbowKitProviderProps {
   children: ReactNode;
 }
 
+const theme = darkTheme({
+  accentColor: "#8b3dff",
+  accentColorForeground: "#fff",
+});
+theme.colors.modalBackground = "#0F100F";
+
 const RainbowKitWagmiConfig = ({ children }: RainbowKitProviderProps) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider theme={theme}>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
