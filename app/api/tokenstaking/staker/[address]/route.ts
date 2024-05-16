@@ -1,4 +1,3 @@
-import { getOwnedNFTs } from "@/lib/contract/my-nft";
 import { getStakerInfo } from "@/lib/contract/token-staking";
 import { NextRequest } from "next/server";
 

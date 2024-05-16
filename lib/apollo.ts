@@ -36,7 +36,7 @@ export const getOwnedTokenIds = async (owner: string) => {
     );
     return tokenIds;
   } catch (error) {
-    console.error("[getOwnedNFTs]: ", error);
+    console.error("[getOwnedTokenIds]: ", error);
     return [];
   }
 };
