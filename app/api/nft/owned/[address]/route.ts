@@ -1,4 +1,4 @@
-import { getOwnedNFTs } from "@/lib/contract/my-nft";
+import { getOwnedNFTs } from "@/lib/apollo";
 import { NextRequest } from "next/server";
 
 export async function GET(

@@ -13,6 +13,7 @@ export const TokenStakingContractAddress =
   process.env.NEXT_PUBLIC_TOKEN_STAKING_CONTRACT_ADDRESS || "";
 
 export const AlchemyApiKey = process.env.ALCHEMY_API_KEY || "";
+export const GraphUrl = process.env.THE_GRAPH_QUERY_URL || "";
 
 export const DependencyDelayTime = 100; // 100ms
 

@@ -1,13 +1,13 @@
 "use client";
 
 import Typography from "@/components/common/typography";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import NFTImage from "@/assets/images/nft.png";
 import Image from "next/image";
 import LogoIcon from "@/components/icons/logo-icon";
 import { GuideData, NFTStakingLoadingMessages } from "@/data/data";
 import KingImage from "@/assets/images/king.png";
-import { Lightbulb, SquareArrowOutUpRight, X } from "lucide-react";
+import { Lightbulb, RotateCw, SquareArrowOutUpRight, X } from "lucide-react";
 import DiamondIcon from "@/components/icons/diamond-icon";
 import {
   useAccount,
@@ -73,18 +73,33 @@ const NFTStaking = () => {
 
   const [reward, setReward] = useState("0");
 
+  const loadNFTs = useCallback(async () => {
+    if (!address) {
+      setOwnedTokenIds([]);
+      setStakedTokenIds([]);
+    } else {
+      const ownedTmp = await getOwnedNFTsAPI(address);
+      const staked = await getStakedNFTsAPI(address);
+      setStakedTokenIds(staked);
+      const owned: number[] = [];
+      ownedTmp.forEach((tokenId) => {
+        if (!staked.includes(tokenId)) {
+          owned.push(tokenId);
+        }
+      });
+      setOwnedTokenIds(owned);
+    }
+  }, [address]);
+
   useEffect(() => {
     loadClaimableReward();
   }, [stakedTokenIds]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      loadStakedNFTs();
-      loadOwnedNFTs();
-    }, DependencyDelayTime);
+    const timeoutId = setTimeout(loadNFTs, DependencyDelayTime);
 
     return () => clearTimeout(timeoutId);
-  }, [address]);
+  }, [loadNFTs]);
 
   useEffect(() => {
     if (isConfirmed) {
@@ -94,8 +109,7 @@ const NFTStaking = () => {
         loadingText === NFTStakingLoadingMessages.Unstaking
       ) {
         setSelectedNFTs([]);
-        loadOwnedNFTs();
-        loadStakedNFTs();
+        loadNFTs();
       } else if (loadingText === NFTStakingLoadingMessages.Claiming) {
         loadTotalClaimedReward();
         loadClaimableReward();
@@ -121,22 +135,6 @@ const NFTStaking = () => {
       toast.error(error.message);
     }
   }, [error?.message]);
-
-  const loadOwnedNFTs = async () => {
-    if (address) {
-      setOwnedTokenIds(await getOwnedNFTsAPI(address));
-    } else {
-      setOwnedTokenIds([]);
-    }
-  };
-
-  const loadStakedNFTs = async () => {
-    if (address) {
-      setStakedTokenIds(await getStakedNFTsAPI(address));
-    } else {
-      setStakedTokenIds([]);
-    }
-  };
 
   const loadClaimableReward = async () => {
     if (stakedTokenIds.length === 0) {
@@ -314,7 +312,13 @@ const NFTStaking = () => {
 
           <div className="flex flex-col lg:flex-row lg:items-center gap-5 mb-6">
             <span className="font-bold text-[20px] lg:text-[28px] flex items-center gap-2">
-              My NFTs ({nftCounts[activeTab]}) <DiamondIcon />
+              My NFTs ({nftCounts[activeTab]}) <DiamondIcon />{" "}
+              <button
+                className="w-5 h-5 flex items-center justify-center bg-white/0 hover:bg-white/10 rounded-full transition-all"
+                onClick={loadNFTs}
+              >
+                <RotateCw size={14} />
+              </button>
             </span>
             <span>
               (Select which NFTs you’d like to{" "}
