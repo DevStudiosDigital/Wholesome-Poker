@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 import { getOwnedNFTsQuery } from "./apollo-query";
 
-export const getOwnedNFTs = async (owner: string) => {
+export const getOwnedTokenIds = async (owner: string) => {
   try {
     const defaultOptions: DefaultOptions = {
       watchQuery: {
