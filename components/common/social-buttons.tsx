@@ -7,17 +7,20 @@ import TwitterIcon from '../icons/twitter-icon';
 const SocialButtons = () => {
   return (
     <div className='flex gap-6'>
-      <a href='https://telegram.org' target='_blank' rel='noopener noreferrer'>
-        <Button variant={'icon'} size={'icon'}>
-          <TelegramIcon className='w-6 h-6' />
-        </Button>
-      </a>
-      <a href='https://discord.com' target='_blank' rel='noopener noreferrer'>
+      <a
+        href='https://discord.gg/wholesomepoker'
+        target='_blank'
+        rel='noopener noreferrer'
+      >
         <Button variant={'icon'} size={'icon'}>
           <DiscordIcon className='w-6 h-6' />
         </Button>
       </a>
-      <a href='https://x.com' target='_blank' rel='noopener noreferrer'>
+      <a
+        href='https://x.com/wholesomepoker'
+        target='_blank'
+        rel='noopener noreferrer'
+      >
         <Button variant={'icon'} size={'icon'}>
           <TwitterIcon className='w-6 h-6' />
         </Button>
