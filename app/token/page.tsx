@@ -397,19 +397,7 @@ const TokenStaking = () => {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  ...users,
-                  {
-                    wallet_address:
-                      '0x0000000000000000000000000000000000000000',
-                    previous_points: 0,
-                    staked_eth: 0,
-                    staked_usdb: 0,
-                    stake_eth_timestamp: '',
-                    stake_usdb_timestamp: '',
-                    current_point: 0,
-                  },
-                ]
+                {users
                   .sort(
                     (a, b) =>
                       (b.current_point ? b.current_point : 0) -
