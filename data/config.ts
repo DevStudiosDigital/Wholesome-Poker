@@ -1,3 +1,6 @@
+export const AppMode: "testnet" | "mainnet" =
+  (process.env.NEXT_PUBLIC_APP_MODE as any) || "testnet";
+
 export const MyNFTContractAddress =
   process.env.NEXT_PUBLIC_MyNFT_CONTRACT_ADDRESS || "";
 export const MyTokenContractAddress =
@@ -10,6 +13,7 @@ export const TokenStakingContractAddress =
   process.env.NEXT_PUBLIC_TOKEN_STAKING_CONTRACT_ADDRESS || "";
 
 export const AlchemyApiKey = process.env.ALCHEMY_API_KEY || "";
+export const GraphUrl = process.env.THE_GRAPH_QUERY_URL || "";
 
 export const DependencyDelayTime = 100; // 100ms
 
@@ -22,3 +26,8 @@ export const UnderlyingNFT = {
   symbol: "MNFT",
   name: "MyNFT",
 };
+
+export const AlchemyApiUrl =
+  AppMode === "testnet"
+    ? "https://eth-sepolia.g.alchemy.com"
+    : "https://eth-mainnet.g.alchemy.com";

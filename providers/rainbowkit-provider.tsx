@@ -6,11 +6,13 @@ import {
   RainbowKitProvider,
   getDefaultWallets,
   getDefaultConfig,
+  darkTheme,
 } from "@rainbow-me/rainbowkit";
 import { braveWallet } from "@rainbow-me/rainbowkit/wallets";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { polygon, sepolia } from "viem/chains";
+import { mainnet, sepolia } from "viem/chains";
+import { AppMode } from "@/data/config";
 
 const { wallets } = getDefaultWallets({
   appName: "Wholesome Poker",
@@ -20,7 +22,7 @@ const { wallets } = getDefaultWallets({
 const config = getDefaultConfig({
   appName: "Wholesome Poker",
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
-  chains: [sepolia],
+  chains: [AppMode === "mainnet" ? mainnet : sepolia],
   ssr: true,
   wallets: [
     ...wallets,
@@ -37,11 +39,17 @@ interface RainbowKitProviderProps {
   children: ReactNode;
 }
 
+const theme = darkTheme({
+  accentColor: "#8b3dff",
+  accentColorForeground: "#fff",
+});
+theme.colors.modalBackground = "#0F100F";
+
 const RainbowKitWagmiConfig = ({ children }: RainbowKitProviderProps) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider theme={theme}>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
