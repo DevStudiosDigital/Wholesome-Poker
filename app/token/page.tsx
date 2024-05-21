@@ -374,9 +374,8 @@ const TokenStaking = () => {
             <div className='bg-primary rounded-full w-8 h-8 flex items-center justify-center'>
               <Lightbulb />
             </div>
-            <div className='w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]'>
-              Leaderboard updates occur hourly, on the hour (e.g., 2:00 PM, 3:00
-              PM, etc.).
+            <div className="w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]">
+              Leaderboard updates occur after every stake or unstake
             </div>
           </div>
 
