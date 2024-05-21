@@ -29,7 +29,7 @@ import { ERC20ContractABI, TokenStakingContractABI } from '@/assets/abi';
 import Link from 'next/link';
 import useStakerInfo from '@/hooks/useStakerInfo';
 import { getAllUsersAPI, updateUserAPI } from '@/services/user.service';
-import { clacUserScore, shortenAddress } from '@/lib/utils';
+import { clacUserScore, shortenAddress, shortenAddressEnd } from '@/lib/utils';
 import useStakerPoint from '@/hooks/useStakerPoint';
 import { toast } from 'react-toastify';
 
@@ -212,7 +212,7 @@ const TokenStaking = () => {
               </span>
               USDB
             </Typography>
-            <Typography size={24}>Total Staked of USDB</Typography>
+            <Typography size={24}>Total Staked</Typography>
           </div>
 
           <div className='bg-card/60 px-6 md:px-10 py-6 rounded-[16px] w-full lg:w-0 grow'>
@@ -228,7 +228,7 @@ const TokenStaking = () => {
               </span>
               ETH
             </Typography>
-            <Typography size={24}>Total Staked of ETH</Typography>
+            <Typography size={24}>Total Staked</Typography>
           </div>
 
           <div className='bg-secondary px-6 md:px-10 py-6 rounded-[16px] w-full lg:w-0 grow text-black'>
@@ -238,7 +238,7 @@ const TokenStaking = () => {
                 : '-'}
               FRP
             </Typography>
-            <Typography size={24}>RFP total earned</Typography>
+            <Typography size={24}>Total Earned</Typography>
           </div>
         </div>
 
@@ -274,7 +274,7 @@ const TokenStaking = () => {
                 QUANTITY
               </Typography>
               <p className='text-[16px] lg:text-[20px]'>
-                Set the quantity you want to unstake
+                Set the quantity to stake or unstake
               </p>
               <input
                 className='text-[36px] lg:text-[44px] 2xl:text-[48px] bg-card w-full px-5 py-2 rounded-[12px] md:rounded-[16px] outline-none mt-8 font-bold'
@@ -313,7 +313,7 @@ const TokenStaking = () => {
           <div className='text-[20px] md:text-[24px] 2xl:text-[32px] hidden xl:flex flex-col justify-between'>
             <div>
               <span className='text-[16px] md:text-[20px] 2xl:text-[24px]'>
-                Balance USDB
+                Available to Stake
               </span>
               <br />
               <span className='font-bold'>
@@ -325,7 +325,7 @@ const TokenStaking = () => {
             </div>
             <div>
               <span className='text-[16px] md:text-[20px] 2xl:text-[24px]'>
-                Balance ETH
+                Available to Stake
               </span>
               <br />
               <span className='font-bold'>
@@ -342,14 +342,20 @@ const TokenStaking = () => {
           <div className='my-10 mx-6 md:m-10 lg:m-12 xl:m-20 w-full max-w-[350px] xl:max-w-[500px] relative z-10'>
             <LogoIcon className='w-10 lg:w-16 mb-8 lg:mb-10' />
             <p className='font-bold text-[32px] lg:text-[40px]'>
-              BECOME THE SELECTED ONE
+              JOIN THE WHOLESOME POKER COMMUNITY
             </p>
             <p className='text-[14px] lg:text-[16px]'>
               Your new home for rake free poker & tournaments
             </p>
-            <StakeButton className='w-40 lg:w-[200px] font-bold mt-6'>
-              Buy Now
-            </StakeButton>
+            <Link
+              href='https://blur.io/blast/collection/tilted-kings'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <StakeButton className='w-40 lg:w-[200px] font-bold mt-6'>
+                Buy Now
+              </StakeButton>
+            </Link>
           </div>
           <div className='relative lg:static'>
             <Image
@@ -366,15 +372,15 @@ const TokenStaking = () => {
         </div>
 
         <div className='p-4 md:p-6 flex flex-wrap gap-4 md:gap-6 justify-between 2xl:items-center bg-[#0f100f8f] rounded-[16px] 2xl:rounded-[24px] mt-5 lg:mt-10'>
-          <StakeButton className='w-52 lg:w-60 font-bold order-1'>
-            Actual leaderboard
+          <StakeButton className='w-52 lg:w-60 font-bold order-1' disabled>
+            Leaderboard
           </StakeButton>
 
           <div className='flex gap-4 items-center py-3 px-6 rounded-[16px] bg-card/60 w-full lg:w-auto order-3 lg:order-2'>
             <div className='bg-primary rounded-full w-8 h-8 flex items-center justify-center'>
               <Lightbulb />
             </div>
-            <div className="w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]">
+            <div className='w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]'>
               Leaderboard updates occur after every stake or unstake
             </div>
           </div>
@@ -405,7 +411,7 @@ const TokenStaking = () => {
                       <td className='rounded-l-[8px]'>{ind + 1}</td>
                       <td>
                         <span className='hidden md:block'>
-                          {shortenAddress(user.wallet_address)}
+                          {shortenAddressEnd(user.wallet_address)}
                         </span>
                         <span className='block md:hidden'>
                           {user.wallet_address.slice(0, 6)}...

@@ -252,9 +252,10 @@ const NFTStaking = () => {
               <Typography size={24}>Total Claimed</Typography>
               <button
                 className='bg-secondary text-[20px] rounded-[16px] w-full h-[60px] mt-5 text-black font-bold'
+                disabled
                 onClick={handleClaim}
               >
-                Claim
+                Claim is not live
               </button>
             </div>
           </div>
