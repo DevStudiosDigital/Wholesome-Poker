@@ -1674,6 +1674,9 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
     using Arrays for uint256[];
     using Arrays for address[];
 
+    string public name = "TiltedKings";
+    string public symbol = "xTILTEDKING";
+
     // Mapping from token ID to account balances
     mapping(uint256 => mapping(address => uint256)) private _balances;
 
