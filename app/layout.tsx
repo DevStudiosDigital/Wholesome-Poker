@@ -5,6 +5,7 @@ import Header from '@/components/layout/header';
 import SideBar from '@/components/layout/side-bar';
 import RainbowKitWagmiConfig from '@/providers/rainbowkit-provider';
 import { ToastContainer } from 'react-toastify';
+import Head from 'next/head';
 
 const font = Bricolage_Grotesque({ subsets: ['latin'] });
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      <Head>
+        <link rel='icon' type='image/png' href='/favicon.ico' />
+      </Head>
       <body
         className={`${font.className} text-white bg-[#0F100F] relative overflow-auto leading-snug`}
       >
