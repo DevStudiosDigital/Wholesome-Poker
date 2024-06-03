@@ -2082,6 +2082,93 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
     }
 }
 
+// OpenZeppelin Contracts (last updated v5.0.0) (utils/ReentrancyGuard.sol)
+
+pragma solidity ^0.8.20;
+
+/**
+ * @dev Contract module that helps prevent reentrant calls to a function.
+ *
+ * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier
+ * available, which can be applied to functions to make sure there are no nested
+ * (reentrant) calls to them.
+ *
+ * Note that because there is a single `nonReentrant` guard, functions marked as
+ * `nonReentrant` may not call one another. This can be worked around by making
+ * those functions `private`, and then adding `external` `nonReentrant` entry
+ * points to them.
+ *
+ * TIP: If EIP-1153 (transient storage) is available on the chain you're deploying at,
+ * consider using {ReentrancyGuardTransient} instead.
+ *
+ * TIP: If you would like to learn more about reentrancy and alternative ways
+ * to protect against it, check out our blog post
+ * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].
+ */
+abstract contract ReentrancyGuard {
+    // Booleans are more expensive than uint256 or any type that takes up a full
+    // word because each write operation emits an extra SLOAD to first read the
+    // slot's contents, replace the bits taken up by the boolean, and then write
+    // back. This is the compiler's defense against contract upgrades and
+    // pointer aliasing, and it cannot be disabled.
+
+    // The values being non-zero value makes deployment a bit more expensive,
+    // but in exchange the refund on every call to nonReentrant will be lower in
+    // amount. Since refunds are capped to a percentage of the total
+    // transaction's gas, it is best to keep them low in cases like this one, to
+    // increase the likelihood of the full refund coming into effect.
+    uint256 private constant NOT_ENTERED = 1;
+    uint256 private constant ENTERED = 2;
+
+    uint256 private _status;
+
+    /**
+     * @dev Unauthorized reentrant call.
+     */
+    error ReentrancyGuardReentrantCall();
+
+    constructor() {
+        _status = NOT_ENTERED;
+    }
+
+    /**
+     * @dev Prevents a contract from calling itself, directly or indirectly.
+     * Calling a `nonReentrant` function from another `nonReentrant`
+     * function is not supported. It is possible to prevent this from happening
+     * by making the `nonReentrant` function external, and making it call a
+     * `private` function that does the actual work.
+     */
+    modifier nonReentrant() {
+        _nonReentrantBefore();
+        _;
+        _nonReentrantAfter();
+    }
+
+    function _nonReentrantBefore() private {
+        // On the first call to nonReentrant, _status will be NOT_ENTERED
+        if (_status == ENTERED) {
+            revert ReentrancyGuardReentrantCall();
+        }
+
+        // Any calls to nonReentrant after this point will fail
+        _status = ENTERED;
+    }
+
+    function _nonReentrantAfter() private {
+        // By storing the original value once again, a refund is triggered (see
+        // https://eips.ethereum.org/EIPS/eip-2200)
+        _status = NOT_ENTERED;
+    }
+
+    /**
+     * @dev Returns true if the reentrancy guard is currently set to "entered", which indicates there is a
+     * `nonReentrant` function in the call stack.
+     */
+    function _reentrancyGuardEntered() internal view returns (bool) {
+        return _status == ENTERED;
+    }
+}
+
 enum YieldMode {
     AUTOMATIC,
     VOID,
@@ -2132,7 +2219,7 @@ interface IWholesomePokerStaking {
     function ownerOf(uint256 tokenId) external view returns (address);
 }
 
-contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
+contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable, ReentrancyGuard {
 
     // A struct to represent the stake details of each staked NFT token.
     struct Stake {
@@ -2184,7 +2271,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
      * @dev Allows a user to stake multiple NFT tokens. The contract must be in the OPEN state.
      * @param tokenIds An array of token IDs that the user wants to stake.
      */
-    function stake(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) {
+    function stake(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) nonReentrant {
         for (uint256 i = 0; i < tokenIds.length; i++) {
             require(NFT.ownerOf(tokenIds[i]) == msg.sender, "Not The Owner!");
             stakes[tokenIds[i]] = Stake(msg.sender, block.timestamp, block.timestamp, 0);
@@ -2198,7 +2285,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
      * @dev Allows a user to unstake multiple NFT tokens and claim any accumulated rewards. The contract must be in the OPEN state.
      * @param tokenIds An array of token IDs that the user wants to unstake.
      */
-    function unstake(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) {
+    function unstake(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) nonReentrant {
         uint256 totalRewards = 0;
         for (uint256 i = 0; i < tokenIds.length; i++) {
             require(stakes[tokenIds[i]].staker == msg.sender, "Not Staker");
@@ -2216,7 +2303,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
      * @dev Allows a user to claim rewards for multiple staked tokens without unstaking them. The contract must be in the OPEN state.
      * @param tokenIds An array of token IDs for which to claim rewards.
      */
-    function claim(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) {
+    function claim(uint256[] calldata tokenIds) external isContractState(ContractState.OPEN) nonReentrant {
         uint256 totalRewards = 0;
         for (uint i = 0; i < tokenIds.length; i++) {
             require(stakes[tokenIds[i]].staker == msg.sender, "Not Staker!");
@@ -2331,7 +2418,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
     /// @notice Withdraws Ether from the contract
     /// @param recipient The address to receive the Ether
     /// @param amount The amount of Ether to withdraw
-    function withdrawEther(address recipient, uint256 amount) external onlyOwner {
+    function withdrawEther(address recipient, uint256 amount) external onlyOwner nonReentrant {
         require(recipient != address(0), "Invalid Address!");
         require(amount > 0 && address(this).balance >= amount, "Invalid Amount!");
 
@@ -2343,7 +2430,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
     /// @param recipient The address to receive the tokens
     /// @param amount The amount of tokens to withdraw
     /// @param token The address of the token contract
-    function withdrawToken(address recipient, uint256 amount, address token) external onlyOwner {
+    function withdrawToken(address recipient, uint256 amount, address token) external onlyOwner nonReentrant {
         require(recipient != address(0), "Invalid Address!");
         require(amount > 0, "Invalid Amount!");
         require(token != address(0), "Invalid Token!");
@@ -2351,7 +2438,7 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable {
         require(IERC20(token).transfer(recipient, amount), "Unsuccessful Transfer!");
     }
 
-    function claimMyContractsGas(address recipient) external onlyOwner {
+    function claimMyContractsGas(address recipient) external onlyOwner nonReentrant {
         IBlast(0x4300000000000000000000000000000000000002).claimAllGas(address(this), recipient);
     }
 
