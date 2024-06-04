@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -8,8 +8,13 @@ export function cn(...inputs: ClassValue[]) {
 export const shortenAddress = (address: string, length: number = 3) => {
   const len = address.length;
   return (
-    address.slice(0, length + 2) + "..." + address.slice(len - length, len)
+    address.slice(0, length + 2) + '...' + address.slice(len - length, len)
   );
+};
+
+export const shortenAddressEnd = (address: string, length: number = 4) => {
+  const len = address.length;
+  return address.slice(0, 2) + '...' + address.slice(len - length, len);
 };
 
 export const clacUserScore = (user: IPKRUser) => {
