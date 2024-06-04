@@ -380,8 +380,8 @@ const TokenStaking = () => {
             <div className='bg-primary rounded-full w-8 h-8 flex items-center justify-center'>
               <Lightbulb />
             </div>
-            <div className='w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]'>
-              Leaderboard updates occur after every stake or unstake
+            <div className="w-0 grow lg:w-auto lg:grow-0 lg:max-w-[420px]">
+            Leaderboard updated in real time
             </div>
           </div>
 
