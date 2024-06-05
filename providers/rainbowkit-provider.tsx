@@ -19,10 +19,12 @@ const { wallets } = getDefaultWallets({
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
 });
 
+export const MainChain = AppMode === "mainnet" ? mainnet : sepolia;
+
 const config = getDefaultConfig({
   appName: "Wholesome Poker",
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
-  chains: [AppMode === "mainnet" ? mainnet : sepolia],
+  chains: [MainChain],
   ssr: true,
   wallets: [
     ...wallets,
