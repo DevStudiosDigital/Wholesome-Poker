@@ -1,30 +1,31 @@
 export const GuideData = [
   {
-    title: "How to join",
-    description: "Get your Poker NFT, hold it tight and be active.",
+    title: 'HOW TO JOIN',
+    description:
+      'Hold a Tilted Kings by Wholesome Poker NFT to join the community. The mint on Blast is complete, and secondary trading is supported by Blur.',
   },
   {
-    title: "rules",
+    title: 'STAKE',
     description:
-      "Complete tasks, hold NFTs and lock your spot on the top of season leaderboard to win the biggest share.",
+      'Stake your Tilted Kings, ETH, or USDB. Staking ETH or USDB is only available for Tilted Kings holders.',
   },
   {
-    title: "prizes",
+    title: 'EARN',
     description:
-      "Every airdrop season comes with lavish $QORPO rewards for holders.",
+      'Staked Tilted Kings earn $GAMBLE, the native token for the Wholesome Poker ecosystem. Staked ETH and USDB earn Freeroll Points (FRP), which can be redeemed for freeroll poker tournament entries once the platform is live.',
   },
 ];
 
 export const NFTStakingLoadingMessages = {
-  Confirming: "Confirming...",
-  Approving: "Approving...",
-  Staking: "Staking...",
-  Unstaking: "Unstaking...",
-  Claiming: "Claiming...",
+  Confirming: 'Confirming...',
+  Approving: 'Approving...',
+  Staking: 'Staking...',
+  Unstaking: 'Unstaking...',
+  Claiming: 'Claiming...',
 };
 
 export const TokenStakingLoadingMessages = {
-  Approving: "Approving...",
-  Staking: "Staking...",
-  Unstaking: "Unstaking...",
+  Approving: 'Approving...',
+  Staking: 'Staking...',
+  Unstaking: 'Unstaking...',
 };
