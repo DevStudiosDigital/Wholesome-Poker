@@ -2244,10 +2244,12 @@ contract WholeSomePokerNFTStaking is IWholesomePokerStaking, ERC1155, Ownable, R
 
 
     constructor() {
-        // NFT = IERC721();
-        // TOKEN = IERC20Metadata();
+        NFT = IERC721();
+        TOKEN = IERC20Metadata();
 
-        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
+        IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
+
+        IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800).configurePointsOperator(0x8f5b56ede7B227eb949e8f3c2063c7d377dF1AdB);
     }
 
     ///
