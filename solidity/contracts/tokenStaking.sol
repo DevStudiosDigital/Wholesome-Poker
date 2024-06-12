@@ -911,16 +911,16 @@ contract WholesomePokerTokenStaking is Ownable, ERC20, ReentrancyGuard {
     ContractState public contractState = ContractState.OPEN;  // Initial state of the contract.
 
     constructor() ERC20("WP Token Staking", "WPTS") {
-        // USDB = IERC20Metadata(usdbTokenAddress);
-        // wpStaking = IWholesomePokerStaking();
+        USDB = IERC20Metadata(usdbTokenAddress);
+        wpStaking = IWholesomePokerStaking();
 
-        // USDBRebasing.configure(YieldMode.CLAIMABLE); //configure claimable yield for USDB
+        USDBRebasing.configure(YieldMode.CLAIMABLE); //configure claimable yield for USDB
 
-        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableYield();
-		// IBlast(0x4300000000000000000000000000000000000002).configureGovernor(msg.sender);
-        // IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
+        IBlast(0x4300000000000000000000000000000000000002).configureClaimableYield();
+		IBlast(0x4300000000000000000000000000000000000002).configureGovernor(0x8f5b56ede7B227eb949e8f3c2063c7d377dF1AdB);
+        IBlast(0x4300000000000000000000000000000000000002).configureClaimableGas();
 
-        // IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800).configurePointsOperator(pointsOperator);
+        IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800).configurePointsOperator(0x8f5b56ede7B227eb949e8f3c2063c7d377dF1AdB);
     }
 
     /**
