@@ -2215,6 +2215,11 @@ interface IBlast{
     function readGasParams(address contractAddress) external view returns (uint256 etherSeconds, uint256 etherBalance, uint256 lastUpdated, GasMode);
 }
 
+interface IBlastPoints {
+  function configurePointsOperator(address operator) external;
+  function configurePointsOperatorOnBehalf(address contractAddress, address operator) external;
+}
+
 interface IWholesomePokerStaking {
     function ownerOf(uint256 tokenId) external view returns (address);
 }
